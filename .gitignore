@@ -1,0 +1,79 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.tmp
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment Files
+.env
+.env.*
+!.env.example
+*.env.backup
+*.env.production
+
+# General Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ----------------------------------------------------
+# Backend (Laravel)
+# ----------------------------------------------------
+back-end/vendor/
+back-end/node_modules/
+back-end/.env
+back-end/.env.*
+!back-end/.env.example
+back-end/.phpunit.cache/
+back-end/.phpunit.result.cache
+back-end/.phpactor.json
+back-end/_ide_helper.php
+back-end/Homestead.json
+back-end/Homestead.yaml
+back-end/public/build/
+back-end/public/fonts-manifest.dev.json
+back-end/public/hot
+back-end/public/storage
+back-end/storage/*.key
+back-end/storage/pail/
+back-end/storage/logs/*.log
+back-end/bootstrap/cache/*.php
+!back-end/bootstrap/cache/.gitignore
+back-end/database/*.sqlite
+back-end/database/*.sqlite-journal
+back-end/database/*.sqlite-shm
+back-end/database/*.sqlite-wal
+
+# ----------------------------------------------------
+# Frontend (Nuxt / Vue)
+# ----------------------------------------------------
+front-end/node_modules/
+front-end/.nuxt/
+front-end/.output/
+front-end/.data/
+front-end/.nitro/
+front-end/.cache/
+front-end/dist/
+front-end/logs/
+front-end/.env
+front-end/.env.*
+!front-end/.env.example
+
+# Starter Guides & AI Files
+nuxtjs-laravel-dashboard-starter-guide.md
+frontend-guide.md
+AGENTS.md
+CLAUDE.md
+boost.json
