@@ -10,6 +10,7 @@ import { Mail, ArrowLeft, Loader2, CheckCircle2, AlertCircle } from '@lucide/vue
 definePageMeta({
   layout: 'auth',
   middleware: ['sanctum:guest'],
+  title: 'Forgot Password',
 })
 
 const client = useSanctumClient()

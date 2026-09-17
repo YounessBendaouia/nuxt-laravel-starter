@@ -11,6 +11,7 @@ import { Eye, EyeOff, Loader2, AlertCircle, Check, X, UserPlus } from '@lucide/v
 definePageMeta({
   layout: 'auth',
   middleware: ['sanctum:guest'],
+  title: 'Register',
 })
 
 const { handleRegister, isLoading, errors } = useAuth()

@@ -5,6 +5,23 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
 
+  app: {
+    head: {
+      title: 'Nuxt Laravel Starter',
+      htmlAttrs: {
+        lang: 'en',
+      },
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'description', content: 'Full-stack Nuxt & Laravel Starter Dashboard' },
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      ],
+    },
+  },
+
   modules: ["shadcn-nuxt", "nuxt-auth-sanctum", "@pinia/nuxt"],
   css: ["~/assets/css/tailwind.css"],
 

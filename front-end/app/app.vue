@@ -1,5 +1,16 @@
 <script setup lang="ts">
 import { Toaster } from '@/components/ui/sonner'
+
+const route = useRoute()
+
+useHead({
+  title: () => (route.meta.title as string) || '',
+  titleTemplate: (titleChunk) => {
+    return titleChunk && titleChunk !== 'Nuxt Laravel Starter'
+      ? `${titleChunk} · Nuxt Laravel Starter`
+      : 'Nuxt Laravel Starter'
+  },
+})
 </script>
 
 <template>

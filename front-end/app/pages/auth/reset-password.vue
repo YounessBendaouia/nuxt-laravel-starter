@@ -10,6 +10,7 @@ import { KeyRound, ArrowLeft, Loader2, CheckCircle2, AlertCircle, Eye, EyeOff } 
 definePageMeta({
   layout: 'auth',
   middleware: ['sanctum:guest'],
+  title: 'Reset Password',
 })
 
 const route = useRoute()

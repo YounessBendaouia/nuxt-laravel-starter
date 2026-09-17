@@ -12,6 +12,7 @@ import { Eye, EyeOff, Loader2, AlertCircle, LogIn, CheckCircle2 } from '@lucide/
 definePageMeta({
   layout: 'auth',
   middleware: ['sanctum:guest'],
+  title: 'Log In',
 })
 
 const route = useRoute()

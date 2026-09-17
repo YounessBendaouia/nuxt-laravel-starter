@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  title: 'Welcome',
+})
+
 const { isAuthenticated } = useSanctumAuth()
 
 // Automatically redirect to /dashboard if logged in, or /auth/login if guest

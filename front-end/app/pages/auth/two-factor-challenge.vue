@@ -10,6 +10,7 @@ import { KeyRound, ShieldAlert, Loader2, ArrowLeft, LifeBuoy } from '@lucide/vue
 definePageMeta({
   layout: 'auth',
   middleware: ['sanctum:guest'],
+  title: 'Two-Factor Authentication',
 })
 
 const { submitChallenge, isChallenging, errors } = useTwoFactor()
