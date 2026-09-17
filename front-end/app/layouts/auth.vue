@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ThemeToggle from '@/components/ThemeToggle.vue'
+import LocaleToggle from '@/components/LocaleToggle.vue'
 import { ShieldCheck } from '@lucide/vue'
 </script>
 
@@ -22,8 +23,11 @@ import { ShieldCheck } from '@lucide/vue'
         </span>
       </NuxtLink>
 
-      <div class="flex items-center gap-3">
-        <ThemeToggle />
+      <div class="flex items-center gap-2">
+        <LocaleToggle />
+        <ClientOnly>
+          <ThemeToggle />
+        </ClientOnly>
       </div>
     </header>
 

@@ -44,6 +44,15 @@ const props = withDefaults(
 )
 
 const { user } = useAuth()
+const { locale, locales, t, te } = useI18n()
+
+const currentLocale = computed(() => {
+  return locales.value.find((l: any) =>
+    typeof l === 'string' ? l === locale.value : l.code === locale.value
+  ) as any
+})
+
+const isRtl = computed(() => currentLocale.value?.dir === 'rtl')
 
 const currentUser = computed(() => ({
   name: user.value?.name || "shadcn",
@@ -51,10 +60,10 @@ const currentUser = computed(() => ({
   avatar: user.value?.avatar || "/avatars/shadcn.jpg",
 }))
 
-const data = {
+const data = computed(() => ({
   navMain: [
     {
-      title: "Dashboard",
+      title: te('nav.dashboard') ? t('nav.dashboard') : "Dashboard",
       url: "/dashboard",
       icon: IconDashboard,
     },
@@ -64,7 +73,7 @@ const data = {
       icon: IconListDetails,
     },
     {
-      title: "Analytics",
+      title: te('nav.analytics') ? t('nav.analytics') : "Analytics",
       url: "/dashboard/analytics",
       icon: IconChartBar,
     },
@@ -74,7 +83,7 @@ const data = {
       icon: IconFolder,
     },
     {
-      title: "Team",
+      title: te('nav.users') ? t('nav.users') : "Team",
       url: "/dashboard/users",
       icon: IconUsers,
     },
@@ -129,7 +138,7 @@ const data = {
   ],
   navSecondary: [
     {
-      title: "Settings",
+      title: te('nav.settings') ? t('nav.settings') : "Settings",
       url: "/dashboard/settings",
       icon: IconSettings,
     },
@@ -139,7 +148,7 @@ const data = {
       icon: IconHelp,
     },
     {
-      title: "Search",
+      title: te('nav.search') ? t('nav.search') : "Search",
       url: "#",
       icon: IconSearch,
     },
@@ -161,11 +170,15 @@ const data = {
       icon: IconFileDescription,
     },
   ],
-}
+}))
 </script>
 
 <template>
-  <Sidebar :variant="props.variant" :collapsible="props.collapsible">
+  <Sidebar
+    :variant="props.variant"
+    :collapsible="props.collapsible"
+    :side="isRtl ? 'right' : 'left'"
+  >
     <SidebarHeader>
       <SidebarMenu>
         <SidebarMenuItem>

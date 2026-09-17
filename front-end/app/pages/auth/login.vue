@@ -16,6 +16,7 @@ definePageMeta({
 })
 
 const route = useRoute()
+const { t } = useI18n()
 const { handleLogin, isLoading, errors } = useAuth()
 
 const form = reactive({
@@ -39,9 +40,9 @@ async function onSubmit() {
   <div class="w-full max-w-md animate-in fade-in-50 zoom-in-95 duration-200">
     <Card class="border-border/60 shadow-xl backdrop-blur-sm bg-card/95">
       <CardHeader class="space-y-1.5 text-center pb-6">
-        <CardTitle class="text-2xl font-bold tracking-tight">Welcome back</CardTitle>
+        <CardTitle class="text-2xl font-bold tracking-tight">{{ t('auth.login_title') }}</CardTitle>
         <CardDescription class="text-sm text-muted-foreground">
-          Enter your email and password to access your dashboard
+          {{ t('auth.login_description') }}
         </CardDescription>
       </CardHeader>
 
@@ -81,7 +82,7 @@ async function onSubmit() {
         <form class="space-y-4" @submit.prevent="onSubmit">
           <!-- Email Field -->
           <div class="space-y-2">
-            <Label for="email">Email address</Label>
+            <Label for="email">{{ t('auth.email') }}</Label>
             <Input
               id="email"
               v-model="form.email"
@@ -99,12 +100,12 @@ async function onSubmit() {
           <!-- Password Field -->
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <Label for="password">Password</Label>
+              <Label for="password">{{ t('auth.password') }}</Label>
               <NuxtLink
                 to="/auth/forgot-password"
                 class="text-xs font-medium text-muted-foreground hover:text-primary transition-colors underline-offset-4 hover:underline"
               >
-                Forgot password?
+                {{ t('auth.forgot_password_link') }}
               </NuxtLink>
             </div>
             <div class="relative">
@@ -115,12 +116,12 @@ async function onSubmit() {
                 placeholder="••••••••"
                 required
                 autocomplete="current-password"
-                class="pr-10"
+                class="pe-10"
                 :class="{ 'border-destructive focus-visible:ring-destructive': errors.password }"
               />
               <button
                 type="button"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
+                class="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
                 @click="showPassword = !showPassword"
               >
                 <EyeOff v-if="showPassword" class="h-4 w-4" />
@@ -134,7 +135,7 @@ async function onSubmit() {
           </div>
 
           <!-- Remember Me Checkbox -->
-          <div class="flex items-center space-x-2 pt-1">
+          <div class="flex items-center gap-2 pt-1">
             <Checkbox
               id="remember"
               :checked="form.remember"
@@ -144,15 +145,15 @@ async function onSubmit() {
               for="remember"
               class="text-xs text-muted-foreground leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer select-none"
             >
-              Remember me for 30 days
+              {{ t('auth.remember_me') }}
             </label>
           </div>
 
           <!-- Submit Button -->
           <Button type="submit" class="w-full mt-2 font-medium" :disabled="isLoading">
-            <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
-            <LogIn v-else class="mr-2 h-4 w-4" />
-            {{ isLoading ? 'Signing in...' : 'Sign in' }}
+            <Loader2 v-if="isLoading" class="me-2 h-4 w-4 animate-spin" />
+            <LogIn v-else class="me-2 h-4 w-4" />
+            {{ isLoading ? t('auth.signing_in') : t('auth.sign_in') }}
           </Button>
         </form>
 
@@ -166,9 +167,9 @@ async function onSubmit() {
         </div>
 
         <p class="text-center text-xs text-muted-foreground">
-          Don't have an account?
-          <NuxtLink to="/auth/register" class="font-semibold text-primary hover:underline ml-1">
-            Create an account
+          {{ t('auth.no_account') }}
+          <NuxtLink to="/auth/register" class="font-semibold text-primary hover:underline ms-1">
+            {{ t('auth.sign_up') }}
           </NuxtLink>
         </p>
       </CardContent>

@@ -22,7 +22,24 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["shadcn-nuxt", "nuxt-auth-sanctum", "@pinia/nuxt"],
+  modules: ["shadcn-nuxt", "nuxt-auth-sanctum", "@pinia/nuxt", '@nuxtjs/i18n'],
+
+  i18n: {
+    lazy: false,
+    langDir: 'locales',
+    defaultLocale: 'en',
+    strategy: 'no_prefix',
+    locales: [
+      { code: 'en', language: 'en-US', name: 'English', file: 'en.json', dir: 'ltr' },
+      { code: 'fr', language: 'fr-FR', name: 'Français', file: 'fr.json', dir: 'ltr' },
+      { code: 'ar', language: 'ar-SA', name: 'العربية', file: 'ar.json', dir: 'rtl' },
+    ],
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root',
+    },
+  },
   css: ["~/assets/css/tailwind.css"],
 
   vite: {

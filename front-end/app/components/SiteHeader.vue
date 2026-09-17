@@ -12,17 +12,21 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import ThemeToggle from '@/components/ThemeToggle.vue'
+import LocaleToggle from '@/components/LocaleToggle.vue'
 
 const route = useRoute()
+const { t, te } = useI18n()
 
 const breadcrumbs = computed(() => {
   const parts = route.path.split('/').filter(Boolean)
   if (parts.length === 0 || (parts.length === 1 && parts[0] === 'dashboard')) {
-    return [{ name: 'Dashboard', path: '/dashboard', current: true }]
+    const dashboardTitle = te('nav.dashboard') ? t('nav.dashboard') : 'Dashboard'
+    return [{ name: dashboardTitle, path: '/dashboard', current: true }]
   }
   return parts.map((part, index) => {
     const path = '/' + parts.slice(0, index + 1).join('/')
-    const name = part.charAt(0).toUpperCase() + part.slice(1)
+    const key = `nav.${part.toLowerCase()}`
+    const name = te(key) ? t(key) : part.charAt(0).toUpperCase() + part.slice(1)
     const current = index === parts.length - 1
     return { name, path, current }
   })
@@ -55,8 +59,11 @@ const breadcrumbs = computed(() => {
       <h1 class="text-base font-medium sm:hidden">
         {{ breadcrumbs[breadcrumbs.length - 1]?.name || 'Dashboard' }}
       </h1>
-      <div class="ml-auto flex items-center gap-2">
-        <ThemeToggle />
+      <div class="ms-auto flex items-center gap-2">
+        <LocaleToggle />
+        <ClientOnly>
+          <ThemeToggle />
+        </ClientOnly>
         <Button variant="ghost" as-child size="sm" class="hidden sm:flex">
           <a
             href="https://github.com/unovue/shadcn-vue"

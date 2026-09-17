@@ -14,6 +14,7 @@ definePageMeta({
   title: 'Register',
 })
 
+const { t } = useI18n()
 const { handleRegister, isLoading, errors } = useAuth()
 
 const form = reactive({
@@ -50,9 +51,9 @@ async function onSubmit() {
   <div class="w-full max-w-md animate-in fade-in-50 zoom-in-95 duration-200">
     <Card class="border-border/60 shadow-xl backdrop-blur-sm bg-card/95">
       <CardHeader class="space-y-1.5 text-center pb-6">
-        <CardTitle class="text-2xl font-bold tracking-tight">Create an account</CardTitle>
+        <CardTitle class="text-2xl font-bold tracking-tight">{{ t('auth.register_title') }}</CardTitle>
         <CardDescription class="text-sm text-muted-foreground">
-          Sign up to get access to your dashboard and analytics
+          {{ t('auth.register_description') }}
         </CardDescription>
       </CardHeader>
 
@@ -68,7 +69,7 @@ async function onSubmit() {
         <form class="space-y-4" @submit.prevent="onSubmit">
           <!-- Full Name -->
           <div class="space-y-2">
-            <Label for="name">Full Name</Label>
+            <Label for="name">{{ t('auth.name') }}</Label>
             <Input
               id="name"
               v-model="form.name"
@@ -85,7 +86,7 @@ async function onSubmit() {
 
           <!-- Email -->
           <div class="space-y-2">
-            <Label for="email">Email address</Label>
+            <Label for="email">{{ t('auth.email') }}</Label>
             <Input
               id="email"
               v-model="form.email"
@@ -102,7 +103,7 @@ async function onSubmit() {
 
           <!-- Password -->
           <div class="space-y-2">
-            <Label for="password">Password</Label>
+            <Label for="password">{{ t('auth.password') }}</Label>
             <div class="relative">
               <Input
                 id="password"
@@ -111,12 +112,12 @@ async function onSubmit() {
                 placeholder="••••••••"
                 required
                 autocomplete="new-password"
-                class="pr-10"
+                class="pe-10"
                 :class="{ 'border-destructive focus-visible:ring-destructive': errors.password }"
               />
               <button
                 type="button"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
+                class="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
                 @click="showPassword = !showPassword"
               >
                 <EyeOff v-if="showPassword" class="h-4 w-4" />
@@ -131,7 +132,7 @@ async function onSubmit() {
 
           <!-- Confirm Password -->
           <div class="space-y-2">
-            <Label for="password_confirmation">Confirm Password</Label>
+            <Label for="password_confirmation">{{ t('auth.confirm_password') }}</Label>
             <Input
               id="password_confirmation"
               v-model="form.password_confirmation"
@@ -159,9 +160,9 @@ async function onSubmit() {
 
           <!-- Submit Button -->
           <Button type="submit" class="w-full mt-2 font-medium" :disabled="isLoading || !isPasswordValid">
-            <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
-            <UserPlus v-else class="mr-2 h-4 w-4" />
-            {{ isLoading ? 'Creating account...' : 'Create account' }}
+            <Loader2 v-if="isLoading" class="me-2 h-4 w-4 animate-spin" />
+            <UserPlus v-else class="me-2 h-4 w-4" />
+            {{ isLoading ? t('auth.creating_account') : t('auth.create_account') }}
           </Button>
         </form>
 
@@ -175,9 +176,9 @@ async function onSubmit() {
         </div>
 
         <p class="text-center text-xs text-muted-foreground">
-          Already have an account?
-          <NuxtLink to="/auth/login" class="font-semibold text-primary hover:underline ml-1">
-            Sign in
+          {{ t('auth.already_have_account') }}
+          <NuxtLink to="/auth/login" class="font-semibold text-primary hover:underline ms-1">
+            {{ t('auth.sign_in') }}
           </NuxtLink>
         </p>
       </CardContent>

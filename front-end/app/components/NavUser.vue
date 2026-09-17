@@ -39,6 +39,7 @@ const props = defineProps<{
   user: User
 }>()
 
+const { t } = useI18n()
 const { isMobile } = useSidebar()
 const { handleLogout } = useAuth()
 
@@ -68,13 +69,13 @@ const userInitials = computed(() => {
                 {{ userInitials }}
               </AvatarFallback>
             </Avatar>
-            <div class="grid flex-1 text-left text-sm leading-tight">
+            <div class="grid flex-1 text-start text-sm leading-tight">
               <span class="truncate font-medium">{{ user.name }}</span>
               <span class="text-muted-foreground truncate text-xs">
                 {{ user.email }}
               </span>
             </div>
-            <IconDotsVertical class="ml-auto size-4" />
+            <IconDotsVertical class="ms-auto size-4" />
           </SidebarMenuButton>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -84,14 +85,14 @@ const userInitials = computed(() => {
           align="end"
         >
           <DropdownMenuLabel class="p-0 font-normal">
-            <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+            <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
               <Avatar class="h-8 w-8 rounded-lg">
                 <AvatarImage :src="user.avatar" :alt="user.name" />
                 <AvatarFallback class="rounded-lg">
                   {{ userInitials }}
                 </AvatarFallback>
               </Avatar>
-              <div class="grid flex-1 text-left text-sm leading-tight">
+              <div class="grid flex-1 text-start text-sm leading-tight">
                 <span class="truncate font-medium">{{ user.name }}</span>
                 <span class="text-muted-foreground truncate text-xs">
                   {{ user.email }}
@@ -104,7 +105,7 @@ const userInitials = computed(() => {
             <DropdownMenuItem as-child>
               <NuxtLink to="/dashboard/settings" class="flex items-center gap-2 cursor-pointer w-full">
                 <IconUserCircle class="size-4" />
-                <span>Account</span>
+                <span>{{ t('nav.profile') }}</span>
               </NuxtLink>
             </DropdownMenuItem>
             <DropdownMenuItem class="cursor-pointer">
@@ -119,7 +120,7 @@ const userInitials = computed(() => {
           <DropdownMenuSeparator />
           <DropdownMenuItem @click="handleLogout" class="cursor-pointer text-destructive focus:text-destructive">
             <IconLogout class="size-4" />
-            <span>Log out</span>
+            <span>{{ t('nav.logout') }}</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

@@ -13,6 +13,7 @@ definePageMeta({
   title: 'Forgot Password',
 })
 
+const { t } = useI18n()
 const client = useSanctumClient()
 const email = ref('')
 const isLoading = ref(false)
@@ -46,9 +47,9 @@ async function onSubmit() {
         <div class="mx-auto h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
           <Mail class="h-6 w-6" />
         </div>
-        <CardTitle class="text-2xl font-bold tracking-tight">Forgot password?</CardTitle>
+        <CardTitle class="text-2xl font-bold tracking-tight">{{ t('auth.forgot_password_title') }}</CardTitle>
         <CardDescription class="text-sm text-muted-foreground">
-          No worries, enter your email and we'll send you a password reset link
+          {{ t('auth.forgot_password_description') }}
         </CardDescription>
       </CardHeader>
 
@@ -71,7 +72,7 @@ async function onSubmit() {
 
         <form class="space-y-4" @submit.prevent="onSubmit">
           <div class="space-y-2">
-            <Label for="email">Email address</Label>
+            <Label for="email">{{ t('auth.email') }}</Label>
             <Input
               id="email"
               v-model="email"
@@ -83,8 +84,8 @@ async function onSubmit() {
           </div>
 
           <Button type="submit" class="w-full font-medium" :disabled="isLoading">
-            <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
-            {{ isLoading ? 'Sending reset link...' : 'Send reset link' }}
+            <Loader2 v-if="isLoading" class="me-2 h-4 w-4 animate-spin" />
+            {{ isLoading ? t('common.loading') : t('auth.send_reset_link') }}
           </Button>
         </form>
 
@@ -93,8 +94,8 @@ async function onSubmit() {
             to="/auth/login"
             class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
-            <ArrowLeft class="h-3.5 w-3.5" />
-            Back to login
+            <ArrowLeft class="h-3.5 w-3.5 rtl:rotate-180" />
+            {{ t('auth.back_to_login') }}
           </NuxtLink>
         </div>
       </CardContent>

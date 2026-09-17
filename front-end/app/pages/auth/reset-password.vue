@@ -14,6 +14,7 @@ definePageMeta({
 })
 
 const route = useRoute()
+const { t } = useI18n()
 const client = useSanctumClient()
 
 const form = reactive({
@@ -60,9 +61,9 @@ async function onSubmit() {
         <div class="mx-auto h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
           <KeyRound class="h-6 w-6" />
         </div>
-        <CardTitle class="text-2xl font-bold tracking-tight">Set new password</CardTitle>
+        <CardTitle class="text-2xl font-bold tracking-tight">{{ t('auth.reset_password_title') }}</CardTitle>
         <CardDescription class="text-sm text-muted-foreground">
-          Create a new, strong password to secure your account
+          {{ t('auth.reset_password_description') }}
         </CardDescription>
       </CardHeader>
 
@@ -77,7 +78,7 @@ async function onSubmit() {
           </Alert>
 
           <Button as-child class="w-full">
-            <NuxtLink to="/auth/login">Proceed to Sign In</NuxtLink>
+            <NuxtLink to="/auth/login">{{ t('auth.sign_in') }}</NuxtLink>
           </Button>
         </div>
 
@@ -91,7 +92,7 @@ async function onSubmit() {
           </Alert>
 
           <div class="space-y-2">
-            <Label for="email">Email address</Label>
+            <Label for="email">{{ t('auth.email') }}</Label>
             <Input
               id="email"
               v-model="form.email"
@@ -102,7 +103,7 @@ async function onSubmit() {
           </div>
 
           <div class="space-y-2">
-            <Label for="password">New Password</Label>
+            <Label for="password">{{ t('auth.password') }}</Label>
             <div class="relative">
               <Input
                 id="password"
@@ -111,11 +112,11 @@ async function onSubmit() {
                 placeholder="••••••••"
                 required
                 autocomplete="new-password"
-                class="pr-10"
+                class="pe-10"
               />
               <button
                 type="button"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
+                class="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
                 @click="showPassword = !showPassword"
               >
                 <EyeOff v-if="showPassword" class="h-4 w-4" />
@@ -125,7 +126,7 @@ async function onSubmit() {
           </div>
 
           <div class="space-y-2">
-            <Label for="password_confirmation">Confirm New Password</Label>
+            <Label for="password_confirmation">{{ t('auth.confirm_password') }}</Label>
             <Input
               id="password_confirmation"
               v-model="form.password_confirmation"
@@ -137,8 +138,8 @@ async function onSubmit() {
           </div>
 
           <Button type="submit" class="w-full font-medium" :disabled="isLoading">
-            <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
-            {{ isLoading ? 'Resetting password...' : 'Reset password' }}
+            <Loader2 v-if="isLoading" class="me-2 h-4 w-4 animate-spin" />
+            {{ isLoading ? t('common.loading') : t('auth.set_new_password') }}
           </Button>
         </form>
 
@@ -147,8 +148,8 @@ async function onSubmit() {
             to="/auth/login"
             class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
-            <ArrowLeft class="h-3.5 w-3.5" />
-            Back to login
+            <ArrowLeft class="h-3.5 w-3.5 rtl:rotate-180" />
+            {{ t('auth.back_to_login') }}
           </NuxtLink>
         </div>
       </CardContent>
