@@ -40,7 +40,7 @@ const { isMobile } = useSidebar()
 
 <template>
   <SidebarGroup class="group-data-[collapsible=icon]:hidden">
-    <SidebarGroupLabel>Documents</SidebarGroupLabel>
+    <SidebarGroupLabel>{{ $t('nav.documents') }}</SidebarGroupLabel>
     <SidebarMenu>
       <SidebarMenuItem v-for="item in items" :key="item.name">
         <SidebarMenuButton as-child>
@@ -56,7 +56,7 @@ const { isMobile } = useSidebar()
               class="data-[state=open]:bg-accent rounded-sm"
             >
               <IconDots />
-              <span class="sr-only">More</span>
+              <span class="sr-only">{{ $t('common.more') }}</span>
             </SidebarMenuAction>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -66,16 +66,16 @@ const { isMobile } = useSidebar()
           >
             <DropdownMenuItem>
               <IconFolder />
-              <span>Open</span>
+              <span>{{ $t('common.open') }}</span>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <IconShare3 />
-              <span>Share</span>
+              <span>{{ $t('common.share') }}</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem variant="destructive">
               <IconTrash />
-              <span>Delete</span>
+              <span>{{ $t('common.delete') }}</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -83,7 +83,7 @@ const { isMobile } = useSidebar()
       <SidebarMenuItem>
         <SidebarMenuButton class="text-sidebar-foreground/70">
           <IconDots class="text-sidebar-foreground/70" />
-          <span>More</span>
+          <span>{{ $t('common.more') }}</span>
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>

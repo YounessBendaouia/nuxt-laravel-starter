@@ -51,7 +51,7 @@ async function onSubmit() {
         <Alert v-if="route.query.verified === '1'" class="mb-5 border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
           <CheckCircle2 class="h-4 w-4" />
           <AlertDescription class="font-medium text-xs">
-            Your email address has been successfully verified! You may now sign in.
+            {{ t('auth.verified_success_alert') }}
           </AlertDescription>
         </Alert>
 
@@ -59,7 +59,7 @@ async function onSubmit() {
         <Alert v-if="route.query.verified === 'invalid'" variant="destructive" class="mb-5 border-destructive/30 bg-destructive/10">
           <AlertCircle class="h-4 w-4" />
           <AlertDescription class="font-medium text-xs">
-            The email verification link is invalid or has expired. Please sign in and request a new one.
+            {{ t('auth.verified_invalid_alert') }}
           </AlertDescription>
         </Alert>
 
@@ -67,7 +67,7 @@ async function onSubmit() {
         <Alert v-if="route.query.reset === '1'" class="mb-5 border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
           <CheckCircle2 class="h-4 w-4" />
           <AlertDescription class="font-medium text-xs">
-            Your password was reset successfully. Please sign in with your new password.
+            {{ t('auth.reset_success_alert') }}
           </AlertDescription>
         </Alert>
 
@@ -87,7 +87,7 @@ async function onSubmit() {
               id="email"
               v-model="form.email"
               type="email"
-              placeholder="name@example.com"
+              :placeholder="t('auth.email_placeholder')"
               required
               autocomplete="email"
               :class="{ 'border-destructive focus-visible:ring-destructive': errors.email }"
@@ -126,7 +126,7 @@ async function onSubmit() {
               >
                 <EyeOff v-if="showPassword" class="h-4 w-4" />
                 <Eye v-else class="h-4 w-4" />
-                <span class="sr-only">{{ showPassword ? 'Hide password' : 'Show password' }}</span>
+                <span class="sr-only">{{ showPassword ? t('auth.hide_password') : t('auth.show_password') }}</span>
               </button>
             </div>
             <p v-if="errors.password" class="text-xs font-medium text-destructive mt-1">
@@ -161,7 +161,7 @@ async function onSubmit() {
           <Separator />
           <div class="absolute inset-0 flex items-center justify-center">
             <span class="bg-card px-2 text-xs text-muted-foreground uppercase tracking-wider font-semibold">
-              Or
+              {{ t('common.or') }}
             </span>
           </div>
         </div>

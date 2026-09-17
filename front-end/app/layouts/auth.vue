@@ -38,7 +38,7 @@ import { ShieldCheck } from '@lucide/vue'
 
     <!-- Footer -->
     <footer class="w-full py-4 text-center text-xs text-muted-foreground border-t border-border/40">
-      <p>© {{ new Date().getFullYear() }} NuxtJS & Laravel Sanctum Starter. Built with shadcn-vue.</p>
+      <p>{{ $t('auth.footer_copyright', { year: new Date().getFullYear() }) }}</p>
     </footer>
   </div>
 </template>

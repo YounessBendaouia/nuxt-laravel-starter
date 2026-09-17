@@ -68,7 +68,7 @@ const data = computed(() => ({
       icon: IconDashboard,
     },
     {
-      title: "Lifecycle",
+      title: te('nav.lifecycle') ? t('nav.lifecycle') : "Lifecycle",
       url: "/dashboard",
       icon: IconListDetails,
     },
@@ -78,12 +78,12 @@ const data = computed(() => ({
       icon: IconChartBar,
     },
     {
-      title: "Projects",
+      title: te('nav.projects') ? t('nav.projects') : "Projects",
       url: "/dashboard",
       icon: IconFolder,
     },
     {
-      title: te('nav.users') ? t('nav.users') : "Team",
+      title: te('nav.team') ? t('nav.team') : "Team",
       url: "/dashboard/users",
       icon: IconUsers,
     },
@@ -143,7 +143,7 @@ const data = computed(() => ({
       icon: IconSettings,
     },
     {
-      title: "Get Help",
+      title: te('nav.get_help') ? t('nav.get_help') : "Get Help",
       url: "#",
       icon: IconHelp,
     },
@@ -155,17 +155,17 @@ const data = computed(() => ({
   ],
   documents: [
     {
-      name: "Data Library",
+      name: te('nav.data_library') ? t('nav.data_library') : "Data Library",
       url: "#",
       icon: IconDatabase,
     },
     {
-      name: "Reports",
+      name: te('nav.reports') ? t('nav.reports') : "Reports",
       url: "#",
       icon: IconReport,
     },
     {
-      name: "Word Assistant",
+      name: te('nav.word_assistant') ? t('nav.word_assistant') : "Word Assistant",
       url: "#",
       icon: IconFileDescription,
     },

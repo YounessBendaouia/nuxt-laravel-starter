@@ -19,7 +19,7 @@ if (import.meta.client || import.meta.server) {
   <div class="min-h-screen flex items-center justify-center">
     <div class="flex flex-col items-center gap-2">
       <div class="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-      <p class="text-sm text-muted-foreground">Redirecting...</p>
+      <p class="text-sm text-muted-foreground">{{ $t('common.redirecting') }}</p>
     </div>
   </div>
 </template>

@@ -44,10 +44,10 @@ async function onSubmit() {
       method: 'POST',
       body: form,
     })
-    statusMessage.value = response?.status || 'Your password has been successfully reset.'
+    statusMessage.value = response?.status || t('auth.reset_success_alert')
   } catch (err: any) {
     const data = err?.data || err?.response?._data
-    errorMessage.value = data?.message || data?.errors?.password?.[0] || 'Failed to reset password. The link may have expired.'
+    errorMessage.value = data?.message || data?.errors?.password?.[0] || t('auth.reset_failed')
   } finally {
     isLoading.value = false
   }
@@ -97,6 +97,7 @@ async function onSubmit() {
               id="email"
               v-model="form.email"
               type="email"
+              :placeholder="t('auth.email_placeholder')"
               required
               autocomplete="email"
             />
@@ -121,6 +122,7 @@ async function onSubmit() {
               >
                 <EyeOff v-if="showPassword" class="h-4 w-4" />
                 <Eye v-else class="h-4 w-4" />
+                <span class="sr-only">{{ showPassword ? t('auth.hide_password') : t('auth.show_password') }}</span>
               </button>
             </div>
           </div>

@@ -14,6 +14,6 @@ const { handleRef, sortable } = useSortableContext()
     class="text-muted-foreground size-7 hover:bg-transparent"
   >
     <IconGripVertical class="text-muted-foreground size-3" />
-    <span class="sr-only">Drag to reorder</span>
+    <span class="sr-only">{{ $t('common.drag_to_reorder') }}</span>
   </Button>
 </template>

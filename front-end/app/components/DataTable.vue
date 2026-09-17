@@ -15,6 +15,7 @@ export const schema = z.object({
 </script>
 
 <script setup lang="ts">
+import { ref, h } from "vue"
 import type { RowSelectionState } from "@tanstack/vue-table"
 import { RestrictToVerticalAxis } from "@dnd-kit/abstract/modifiers"
 import {
@@ -36,7 +37,6 @@ import {
 } from "@tanstack/vue-table"
 import { DragDropProvider } from "dnd-kit-vue"
 import { Badge } from '@/components/ui/badge'
-
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -47,7 +47,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-
 import { Label } from '@/components/ui/label'
 import {
   Select,
@@ -64,7 +63,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-
 import {
   Tabs,
   TabsContent,
@@ -76,6 +74,8 @@ import { features } from "./features"
 const props = defineProps<{
   data: TableData[]
 }>()
+
+const { t } = useI18n()
 
 interface TableData {
   id: number
@@ -100,65 +100,66 @@ const columns = columnHelper.columns([
     header: ({ table }) => h(Checkbox, {
       "modelValue": table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate"),
       "onUpdate:modelValue": value => table.toggleAllPageRowsSelected(!!value),
-      "aria-label": "Select all",
+      "aria-label": t('data_table.select_all'),
     }),
     cell: ({ row }) => h(Checkbox, {
       "modelValue": row.getIsSelected(),
       "onUpdate:modelValue": value => row.toggleSelected(!!value),
-      "aria-label": "Select row",
+      "aria-label": t('data_table.select_row'),
     }),
     enableSorting: false,
     enableHiding: false,
   }),
   columnHelper.accessor("header", {
-    header: "Header",
+    header: () => t('data_table.header'),
     cell: ({ row }) => h("div", String(row.getValue("header"))),
     enableHiding: false,
   }),
   columnHelper.accessor("type", {
-    header: "Section Type",
+    header: () => t('data_table.section_type'),
     cell: ({ row }) => h(Badge, {
       variant: "outline",
     }, () => String(row.getValue("type"))),
   }),
   columnHelper.accessor("status", {
-    header: "Status",
+    header: () => t('data_table.status'),
     cell: ({ row }) => {
       const status = row.getValue("status") as string
+      const isDone = status === "Done"
       return h("div", { class: "flex items-center gap-2" }, [
-        status === "Done"
+        isDone
           ? h(IconCircleCheckFilled, { class: "h-4 w-4 text-emerald-500" })
           : h(IconLoader, { class: "h-4 w-4 animate-spin text-muted-foreground" }),
-        h("span", {}, status),
+        h("span", {}, isDone ? t('data_table.done') : t('data_table.in_process')),
       ])
     },
   }),
   columnHelper.accessor("target", {
     header: () => h("div", { class: "flex items-center gap-1" }, [
-      "Target",
+      t('data_table.target'),
     ]),
     cell: ({ row }) => h(Button, {
       variant: "ghost",
       size: "sm",
       class: "h-auto p-1 text-xs font-mono",
     }, () => [
-      h("span", { class: "ml-1 font-semibold" }, String(row.getValue("target"))),
+      h("span", { class: "ms-1 font-semibold" }, String(row.getValue("target"))),
     ]),
   }),
   columnHelper.accessor("limit", {
     header: () => h("div", { class: "flex items-center gap-1" }, [
-      "Limit",
+      t('data_table.limit'),
     ]),
     cell: ({ row }) => h(Button, {
       variant: "ghost",
       size: "sm",
       class: "h-auto p-1 text-xs font-mono",
     }, () => [
-      h("span", { class: "ml-1 font-semibold" }, String(row.getValue("limit"))),
+      h("span", { class: "ms-1 font-semibold" }, String(row.getValue("limit"))),
     ]),
   }),
   columnHelper.accessor("reviewer", {
-    header: "Reviewer",
+    header: () => t('data_table.reviewer'),
     cell: ({ row }) => {
       const reviewer = row.getValue("reviewer") as string
       const isAssigned = reviewer !== "Assign reviewer"
@@ -170,7 +171,7 @@ const columns = columnHelper.columns([
       return h(Select, {}, {
         default: () => [
           h(SelectTrigger, { class: "w-full" }, {
-            default: () => h(SelectValue, { placeholder: "Assign reviewer" }),
+            default: () => h(SelectValue, { placeholder: t('data_table.assign_reviewer') }),
           }),
           h(SelectContent, {}, {
             default: () => [
@@ -192,18 +193,18 @@ const columns = columnHelper.columns([
             class: "h-8 w-8 p-0",
           }, {
             default: () => [
-              h("span", { class: "sr-only" }, "Open menu"),
+              h("span", { class: "sr-only" }, t('data_table.open_menu')),
               h(IconDotsVertical, { class: "h-4 w-4" }),
             ],
           }),
         }),
         h(DropdownMenuContent, { align: "end" }, {
           default: () => [
-            h(DropdownMenuItem, {}, () => "Edit"),
-            h(DropdownMenuItem, {}, () => "Make a copy"),
-            h(DropdownMenuItem, {}, () => "Favorite"),
+            h(DropdownMenuItem, {}, () => t('common.edit')),
+            h(DropdownMenuItem, {}, () => t('data_table.make_a_copy')),
+            h(DropdownMenuItem, {}, () => t('data_table.favorite')),
             h(DropdownMenuSeparator, {}),
-            h(DropdownMenuItem, {}, () => "Delete"),
+            h(DropdownMenuItem, {}, () => t('common.delete')),
           ],
         }),
       ],
@@ -236,7 +237,7 @@ const table = useTable({
   >
     <div class="flex items-center justify-between px-4 lg:px-6">
       <Label for="view-selector" class="sr-only">
-        View
+        {{ t('data_table.view') }}
       </Label>
       <Select default-value="outline">
         <SelectTrigger
@@ -244,39 +245,39 @@ const table = useTable({
           class="flex w-fit @4xl/main:hidden"
           size="sm"
         >
-          <SelectValue placeholder="Select a view" />
+          <SelectValue :placeholder="t('data_table.select_view')" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="outline">
-            Outline
+            {{ t('data_table.outline') }}
           </SelectItem>
           <SelectItem value="past-performance">
-            Past Performance
+            {{ t('data_table.past_performance') }}
           </SelectItem>
           <SelectItem value="key-personnel">
-            Key Personnel
+            {{ t('data_table.key_personnel') }}
           </SelectItem>
           <SelectItem value="focus-documents">
-            Focus Documents
+            {{ t('data_table.focus_documents') }}
           </SelectItem>
         </SelectContent>
       </Select>
       <TabsList class="**:data-[slot=badge]:bg-muted-foreground/30 hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:px-1 @4xl/main:flex">
         <TabsTrigger value="outline">
-          Outline
+          {{ t('data_table.outline') }}
         </TabsTrigger>
         <TabsTrigger value="past-performance">
-          Past Performance <Badge variant="secondary">
+          {{ t('data_table.past_performance') }} <Badge variant="secondary">
             3
           </Badge>
         </TabsTrigger>
         <TabsTrigger value="key-personnel">
-          Key Personnel <Badge variant="secondary">
+          {{ t('data_table.key_personnel') }} <Badge variant="secondary">
             2
           </Badge>
         </TabsTrigger>
         <TabsTrigger value="focus-documents">
-          Focus Documents
+          {{ t('data_table.focus_documents') }}
         </TabsTrigger>
       </TabsList>
       <div class="flex items-center gap-2">
@@ -284,8 +285,8 @@ const table = useTable({
           <DropdownMenuTrigger as-child>
             <Button variant="outline" size="sm">
               <IconLayoutColumns />
-              <span class="hidden lg:inline">Customize Columns</span>
-              <span class="lg:hidden">Columns</span>
+              <span class="hidden lg:inline">{{ t('data_table.customize_columns') }}</span>
+              <span class="lg:hidden">{{ t('data_table.columns') }}</span>
               <IconChevronDown />
             </Button>
           </DropdownMenuTrigger>
@@ -295,7 +296,6 @@ const table = useTable({
                 class="capitalize"
                 :model-value="column.getIsVisible()"
                 @update:model-value="(value) => {
-
                   column.toggleVisibility(!!value)
                 }"
               >
@@ -306,7 +306,7 @@ const table = useTable({
         </DropdownMenu>
         <Button variant="outline" size="sm">
           <IconPlus />
-          <span class="hidden lg:inline">Add Section</span>
+          <span class="hidden lg:inline">{{ t('data_table.add_section') }}</span>
         </Button>
       </div>
     </div>
@@ -333,30 +333,21 @@ const table = useTable({
                   :colspan="columns.length"
                   class="h-24 text-center"
                 >
-                  No results.
+                  {{ t('data_table.no_results') }}
                 </TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </DragDropProvider>
-        <!-- <DndContext
-            collisionDetection={closestCenter}
-            modifiers={[restrictToVerticalAxis]}
-            onDragEnd={handleDragEnd}
-            sensors={sensors}
-            id={sortableId}
-          > -->
-        <!-- </DndContext> -->
       </div>
       <div class="flex items-center justify-between px-4">
         <div class="text-muted-foreground hidden flex-1 text-sm lg:flex">
-          {{ table.getFilteredSelectedRowModel().rows.length }} of
-          {{ table.getFilteredRowModel().rows.length }} row(s) selected.
+          {{ t('data_table.rows_selected', { count: table.getFilteredSelectedRowModel().rows.length, total: table.getFilteredRowModel().rows.length }) }}
         </div>
         <div class="flex w-full items-center gap-8 lg:w-fit">
           <div class="hidden items-center gap-2 lg:flex">
             <Label for="rows-per-page" class="text-sm font-medium">
-              Rows per page
+              {{ t('data_table.rows_per_page') }}
             </Label>
             <Select
               :model-value="table.atoms.pagination.get().pageSize"
@@ -375,18 +366,17 @@ const table = useTable({
             </Select>
           </div>
           <div class="flex w-fit items-center justify-center text-sm font-medium">
-            Page {{ table.atoms.pagination.get().pageIndex + 1 }} of
-            {{ table.getPageCount() }}
+            {{ t('data_table.page_x_of_y', { current: table.atoms.pagination.get().pageIndex + 1, total: table.getPageCount() }) }}
           </div>
-          <div class="ml-auto flex items-center gap-2 lg:ml-0">
+          <div class="ms-auto flex items-center gap-2 lg:ms-0">
             <Button
               variant="outline"
               class="hidden h-8 w-8 p-0 lg:flex"
               :disabled="!table.getCanPreviousPage()"
               @click="table.setPageIndex(0)"
             >
-              <span class="sr-only">Go to first page</span>
-              <IconChevronsLeft />
+              <span class="sr-only">{{ t('data_table.first_page') }}</span>
+              <IconChevronsLeft class="rtl:rotate-180" />
             </Button>
             <Button
               variant="outline"
@@ -395,8 +385,8 @@ const table = useTable({
               :disabled="!table.getCanPreviousPage()"
               @click="table.previousPage()"
             >
-              <span class="sr-only">Go to previous page</span>
-              <IconChevronLeft />
+              <span class="sr-only">{{ t('data_table.prev_page') }}</span>
+              <IconChevronLeft class="rtl:rotate-180" />
             </Button>
             <Button
               variant="outline"
@@ -405,8 +395,8 @@ const table = useTable({
               :disabled="!table.getCanNextPage()"
               @click="table.nextPage()"
             >
-              <span class="sr-only">Go to next page</span>
-              <IconChevronRight />
+              <span class="sr-only">{{ t('data_table.next_page') }}</span>
+              <IconChevronRight class="rtl:rotate-180" />
             </Button>
             <Button
               variant="outline"
@@ -415,8 +405,8 @@ const table = useTable({
               :disabled="!table.getCanNextPage()"
               @click="table.setPageIndex(table.getPageCount() - 1)"
             >
-              <span class="sr-only">Go to last page</span>
-              <IconChevronsRight />
+              <span class="sr-only">{{ t('data_table.last_page') }}</span>
+              <IconChevronsRight class="rtl:rotate-180" />
             </Button>
           </div>
         </div>

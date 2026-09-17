@@ -28,11 +28,11 @@ const showPassword = ref(false)
 
 // Dynamic password requirement rules checklist
 const passwordRules = computed(() => [
-  { label: 'At least 8 characters', met: form.password.length >= 8 },
-  { label: 'Uppercase & lowercase letters', met: /[a-z]/.test(form.password) && /[A-Z]/.test(form.password) },
-  { label: 'At least one number', met: /\d/.test(form.password) },
-  { label: 'At least one special character (!@#$%^&*)', met: /[^A-Za-z0-9]/.test(form.password) },
-  { label: 'Passwords match', met: form.password.length > 0 && form.password === form.password_confirmation },
+  { label: t('auth.rule_min_length'), met: form.password.length >= 8 },
+  { label: t('auth.rule_cases'), met: /[a-z]/.test(form.password) && /[A-Z]/.test(form.password) },
+  { label: t('auth.rule_number'), met: /\d/.test(form.password) },
+  { label: t('auth.rule_special'), met: /[^A-Za-z0-9]/.test(form.password) },
+  { label: t('auth.rule_match'), met: form.password.length > 0 && form.password === form.password_confirmation },
 ])
 
 const isPasswordValid = computed(() => passwordRules.value.every(r => r.met))
@@ -74,7 +74,7 @@ async function onSubmit() {
               id="name"
               v-model="form.name"
               type="text"
-              placeholder="Jane Doe"
+              :placeholder="t('auth.name_placeholder')"
               required
               autocomplete="name"
               :class="{ 'border-destructive focus-visible:ring-destructive': errors.name }"
@@ -91,7 +91,7 @@ async function onSubmit() {
               id="email"
               v-model="form.email"
               type="email"
-              placeholder="jane@example.com"
+              :placeholder="t('auth.email_placeholder')"
               required
               autocomplete="email"
               :class="{ 'border-destructive focus-visible:ring-destructive': errors.email }"
@@ -122,7 +122,7 @@ async function onSubmit() {
               >
                 <EyeOff v-if="showPassword" class="h-4 w-4" />
                 <Eye v-else class="h-4 w-4" />
-                <span class="sr-only">{{ showPassword ? 'Hide password' : 'Show password' }}</span>
+                <span class="sr-only">{{ showPassword ? t('auth.hide_password') : t('auth.show_password') }}</span>
               </button>
             </div>
             <p v-if="errors.password" class="text-xs font-medium text-destructive mt-1">
@@ -145,7 +145,7 @@ async function onSubmit() {
 
           <!-- Password Requirements Checklist -->
           <div class="rounded-lg bg-muted/40 p-3 text-xs space-y-1.5 border border-border/40">
-            <p class="font-medium text-muted-foreground pb-1">Password requirements:</p>
+            <p class="font-medium text-muted-foreground pb-1">{{ t('auth.password_requirements') }}</p>
             <div
               v-for="(rule, index) in passwordRules"
               :key="index"
@@ -170,7 +170,7 @@ async function onSubmit() {
           <Separator />
           <div class="absolute inset-0 flex items-center justify-center">
             <span class="bg-card px-2 text-xs text-muted-foreground uppercase tracking-wider font-semibold">
-              Or
+              {{ t('common.or') }}
             </span>
           </div>
         </div>

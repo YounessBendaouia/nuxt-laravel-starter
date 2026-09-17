@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import {
-  BarChart3,
   TrendingUp,
-  ArrowUpRight,
   Eye,
   MousePointerClick,
   Clock,
@@ -27,6 +24,8 @@ definePageMeta({
   title: 'Analytics',
 })
 
+const { t } = useI18n()
+
 const selectedPeriod = ref<'7d' | '30d' | '90d'>('30d')
 
 interface MetricPoint {
@@ -35,26 +34,26 @@ interface MetricPoint {
   clicks: number
 }
 
-const analyticsData = ref<MetricPoint[]>([
-  { day: 'Mon', views: 2400, clicks: 840 },
-  { day: 'Tue', views: 3100, clicks: 1020 },
-  { day: 'Wed', views: 2800, clicks: 950 },
-  { day: 'Thu', views: 4200, clicks: 1420 },
-  { day: 'Fri', views: 3900, clicks: 1300 },
-  { day: 'Sat', views: 1800, clicks: 610 },
-  { day: 'Sun', views: 2100, clicks: 730 },
+const analyticsData = computed<MetricPoint[]>(() => [
+  { day: t('analytics_page.mon'), views: 2400, clicks: 840 },
+  { day: t('analytics_page.tue'), views: 3100, clicks: 1020 },
+  { day: t('analytics_page.wed'), views: 2800, clicks: 950 },
+  { day: t('analytics_page.thu'), views: 4200, clicks: 1420 },
+  { day: t('analytics_page.fri'), views: 3900, clicks: 1300 },
+  { day: t('analytics_page.sat'), views: 1800, clicks: 610 },
+  { day: t('analytics_page.sun'), views: 2100, clicks: 730 },
 ])
 
-const chartConfig = {
+const chartConfig = computed(() => ({
   views: {
-    label: 'Page Views',
+    label: t('analytics_page.chart_views'),
     color: 'var(--chart-1)',
   },
   clicks: {
-    label: 'Engagements',
+    label: t('analytics_page.chart_engagements'),
     color: 'var(--chart-2)',
   },
-}
+}))
 </script>
 
 <template>
@@ -62,9 +61,9 @@ const chartConfig = {
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div class="flex flex-col gap-1">
-        <h1 class="text-2xl font-bold tracking-tight md:text-3xl">System & Traffic Analytics</h1>
+        <h1 class="text-2xl font-bold tracking-tight md:text-3xl">{{ t('analytics_page.title') }}</h1>
         <p class="text-sm text-muted-foreground">
-          In-depth analysis of user engagement, latency, and conversions.
+          {{ t('analytics_page.description') }}
         </p>
       </div>
 
@@ -75,7 +74,7 @@ const chartConfig = {
           class="h-7 text-xs"
           @click="selectedPeriod = '7d'"
         >
-          7 Days
+          {{ t('analytics_page.days_7') }}
         </Button>
         <Button
           size="sm"
@@ -83,7 +82,7 @@ const chartConfig = {
           class="h-7 text-xs"
           @click="selectedPeriod = '30d'"
         >
-          30 Days
+          {{ t('analytics_page.days_30') }}
         </Button>
         <Button
           size="sm"
@@ -91,7 +90,7 @@ const chartConfig = {
           class="h-7 text-xs"
           @click="selectedPeriod = '90d'"
         >
-          90 Days
+          {{ t('analytics_page.days_90') }}
         </Button>
       </div>
     </div>
@@ -100,54 +99,54 @@ const chartConfig = {
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <Card class="border-border/60 shadow-sm">
         <CardHeader class="flex flex-row items-center justify-between pb-2">
-          <CardTitle class="text-sm font-medium text-muted-foreground">Total Views</CardTitle>
+          <CardTitle class="text-sm font-medium text-muted-foreground">{{ t('analytics_page.total_views') }}</CardTitle>
           <Eye class="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div class="text-2xl font-bold">128,450</div>
           <p class="text-xs text-emerald-500 font-medium mt-1 flex items-center gap-1">
             <TrendingUp class="h-3 w-3" />
-            +18.2% from previous period
+            {{ t('analytics_page.views_trend') }}
           </p>
         </CardContent>
       </Card>
 
       <Card class="border-border/60 shadow-sm">
         <CardHeader class="flex flex-row items-center justify-between pb-2">
-          <CardTitle class="text-sm font-medium text-muted-foreground">Click-Through Rate</CardTitle>
+          <CardTitle class="text-sm font-medium text-muted-foreground">{{ t('analytics_page.ctr') }}</CardTitle>
           <MousePointerClick class="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div class="text-2xl font-bold">3.84%</div>
           <p class="text-xs text-emerald-500 font-medium mt-1 flex items-center gap-1">
             <TrendingUp class="h-3 w-3" />
-            +0.6% improvement
+            {{ t('analytics_page.ctr_trend') }}
           </p>
         </CardContent>
       </Card>
 
       <Card class="border-border/60 shadow-sm">
         <CardHeader class="flex flex-row items-center justify-between pb-2">
-          <CardTitle class="text-sm font-medium text-muted-foreground">Average Session</CardTitle>
+          <CardTitle class="text-sm font-medium text-muted-foreground">{{ t('analytics_page.avg_session') }}</CardTitle>
           <Clock class="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div class="text-2xl font-bold">4m 32s</div>
           <p class="text-xs text-muted-foreground mt-1">
-            +12s longer dwell time
+            {{ t('analytics_page.session_trend') }}
           </p>
         </CardContent>
       </Card>
 
       <Card class="border-border/60 shadow-sm">
         <CardHeader class="flex flex-row items-center justify-between pb-2">
-          <CardTitle class="text-sm font-medium text-muted-foreground">API Latency</CardTitle>
+          <CardTitle class="text-sm font-medium text-muted-foreground">{{ t('analytics_page.latency') }}</CardTitle>
           <Zap class="h-4 w-4 text-emerald-500" />
         </CardHeader>
         <CardContent>
           <div class="text-2xl font-bold">42ms</div>
           <p class="text-xs text-emerald-500 font-medium mt-1">
-            99.98% SLA uptime
+            {{ t('analytics_page.latency_sla') }}
           </p>
         </CardContent>
       </Card>
@@ -156,8 +155,8 @@ const chartConfig = {
     <!-- Views & Engagements Chart -->
     <Card class="border-border/60 shadow-sm">
       <CardHeader>
-        <CardTitle class="text-lg font-semibold">Weekly Activity & Conversions</CardTitle>
-        <CardDescription class="text-xs">Comparison between unique visitors and user conversions</CardDescription>
+        <CardTitle class="text-lg font-semibold">{{ t('analytics_page.weekly_activity') }}</CardTitle>
+        <CardDescription class="text-xs">{{ t('analytics_page.activity_description') }}</CardDescription>
       </CardHeader>
       <CardContent class="pt-2">
         <ClientOnly>
@@ -194,11 +193,11 @@ const chartConfig = {
         <div class="flex items-center justify-center gap-6 mt-6 pt-3 border-t border-border/50 text-xs">
           <div class="flex items-center gap-2">
             <span class="h-2.5 w-2.5 rounded-full bg-[var(--chart-1)]" />
-            <span class="text-muted-foreground">Page Views (Area)</span>
+            <span class="text-muted-foreground">{{ t('analytics_page.legend_views') }}</span>
           </div>
           <div class="flex items-center gap-2">
             <span class="h-2.5 w-2.5 rounded-full bg-[var(--chart-2)]" />
-            <span class="text-muted-foreground">User Engagements (Bars)</span>
+            <span class="text-muted-foreground">{{ t('analytics_page.legend_engagements') }}</span>
           </div>
         </div>
       </CardContent>

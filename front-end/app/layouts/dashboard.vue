@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/sidebar'
 
 const route = useRoute()
+const { t } = useI18n()
 const { user, refreshIdentity } = useAuth()
 const client = useSanctumClient()
 
@@ -30,12 +31,12 @@ async function resendVerification() {
   resendFeedback.value = ''
   try {
     await client('/api/email/verification-notification', { method: 'POST' })
-    resendFeedback.value = 'Verification email sent!'
+    resendFeedback.value = t('banner.resend_sent')
     setTimeout(() => {
       resendFeedback.value = ''
     }, 4000)
   } catch (err: any) {
-    resendFeedback.value = 'Failed to send'
+    resendFeedback.value = t('banner.resend_failed')
     setTimeout(() => {
       resendFeedback.value = ''
     }, 4000)
@@ -63,7 +64,7 @@ async function resendVerification() {
       >
         <div class="flex items-center gap-2">
           <CheckCircle2 class="h-4 w-4 shrink-0 text-emerald-500" />
-          <span class="font-medium">Success! Your email address has been verified.</span>
+          <span class="font-medium">{{ t('banner.email_verified_success') }}</span>
         </div>
       </div>
 
@@ -74,7 +75,7 @@ async function resendVerification() {
       >
         <div class="flex items-center gap-2">
           <AlertCircle class="h-4 w-4 shrink-0 text-amber-500" />
-          <span>Your email address is unverified. Please check your inbox or spam folder.</span>
+          <span>{{ t('banner.email_unverified_warning') }}</span>
         </div>
         <div class="flex items-center gap-2">
           <span v-if="resendFeedback" class="text-xs font-medium text-emerald-600 dark:text-emerald-400">
@@ -88,13 +89,13 @@ async function resendVerification() {
             :disabled="isResending"
             @click="resendVerification"
           >
-            <Loader2 v-if="isResending" class="h-3 w-3 animate-spin mr-1" />
-            Resend link
+            <Loader2 v-if="isResending" class="h-3 w-3 animate-spin me-1" />
+            {{ t('banner.resend_link') }}
           </Button>
           <button
             type="button"
             class="text-muted-foreground hover:text-foreground p-1 rounded transition-colors"
-            title="Dismiss banner"
+            :title="t('banner.dismiss_banner')"
             @click="bannerDismissed = true"
           >
             <X class="h-3.5 w-3.5" />

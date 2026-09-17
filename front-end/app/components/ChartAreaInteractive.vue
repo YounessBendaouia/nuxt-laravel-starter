@@ -1,7 +1,6 @@
 <script setup lang="ts">
+import { ref, computed } from "vue"
 import type { ChartConfig } from '@/components/ui/chart'
-
-// import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { VisArea, VisAxis, VisLine, VisXYContainer } from "@unovis/vue"
 import {
   Card,
@@ -11,7 +10,6 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import {
-
   ChartContainer,
   ChartCrosshair,
   ChartLegendContent,
@@ -27,7 +25,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-const description = "An interactive area chart"
+const { t, locale } = useI18n()
 
 const chartData = [
   { date: new Date("2024-04-01"), desktop: 222, mobile: 150 },
@@ -122,21 +120,19 @@ const chartData = [
   { date: new Date("2024-06-29"), desktop: 103, mobile: 160 },
   { date: new Date("2024-06-30"), desktop: 446, mobile: 400 },
 ]
+
 type Data = typeof chartData[number]
 
-const chartConfig = {
-  // visitors: {
-  //   label: 'Visitors',
-  // },
+const chartConfig = computed<ChartConfig>(() => ({
   mobile: {
-    label: "Mobile",
+    label: t('dashboard.mobile'),
     color: "var(--primary)",
   },
   desktop: {
-    label: "Desktop",
+    label: t('dashboard.desktop'),
     color: "var(--primary)",
   },
-} satisfies ChartConfig
+}))
 
 const svgDefs = `
   <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
@@ -188,27 +184,27 @@ const filterRange = computed(() => {
   <Card class="pt-0">
     <CardHeader class="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
       <div class="grid flex-1 gap-1">
-        <CardTitle>Area Chart - Interactive</CardTitle>
+        <CardTitle>{{ t('dashboard.chart_title') }}</CardTitle>
         <CardDescription>
-          Showing total visitors for the last 3 months
+          {{ t('dashboard.chart_description') }}
         </CardDescription>
       </div>
       <Select v-model="timeRange">
         <SelectTrigger
-          class="hidden w-[160px] rounded-lg sm:ml-auto sm:flex"
+          class="hidden w-[160px] rounded-lg sm:ms-auto sm:flex"
           aria-label="Select a value"
         >
-          <SelectValue placeholder="Last 3 months" />
+          <SelectValue :placeholder="t('dashboard.last_3_months')" />
         </SelectTrigger>
         <SelectContent class="rounded-xl">
           <SelectItem value="90d" class="rounded-lg">
-            Last 3 months
+            {{ t('dashboard.last_3_months') }}
           </SelectItem>
           <SelectItem value="30d" class="rounded-lg">
-            Last 30 days
+            {{ t('dashboard.last_30_days') }}
           </SelectItem>
           <SelectItem value="7d" class="rounded-lg">
-            Last 7 days
+            {{ t('dashboard.last_7_days') }}
           </SelectItem>
         </SelectContent>
       </Select>
@@ -240,9 +236,9 @@ const filterRange = computed(() => {
             :domain-line="false"
             :grid-line="false"
             :num-ticks="6"
-            :tick-format="(d: number, index: number) => {
+            :tick-format="(d: number) => {
               const date = new Date(d)
-              return date.toLocaleDateString('en-US', {
+              return date.toLocaleDateString(locale, {
                 month: 'short',
                 day: 'numeric',
               })
@@ -259,7 +255,7 @@ const filterRange = computed(() => {
             :x="(d: Data) => d.date"
             :template="componentToString(chartConfig, ChartTooltipContent, {
               labelFormatter: (d) => {
-                return new Date(d).toLocaleDateString('en-US', {
+                return new Date(d).toLocaleDateString(locale, {
                   month: 'short',
                   day: 'numeric',
                 })

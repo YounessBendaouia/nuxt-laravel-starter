@@ -110,11 +110,11 @@ const userInitials = computed(() => {
             </DropdownMenuItem>
             <DropdownMenuItem class="cursor-pointer">
               <IconCreditCard class="size-4" />
-              <span>Billing</span>
+              <span>{{ t('nav.billing') }}</span>
             </DropdownMenuItem>
             <DropdownMenuItem class="cursor-pointer">
               <IconNotification class="size-4" />
-              <span>Notifications</span>
+              <span>{{ t('nav.notifications') }}</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />

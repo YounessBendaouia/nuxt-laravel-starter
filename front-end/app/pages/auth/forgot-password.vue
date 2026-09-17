@@ -30,10 +30,10 @@ async function onSubmit() {
       method: 'POST',
       body: { email: email.value },
     })
-    statusMessage.value = response?.status || 'We have emailed your password reset link.'
+    statusMessage.value = response?.status || t('auth.reset_link_sent')
   } catch (err: any) {
     const data = err?.data || err?.response?._data
-    errorMessage.value = data?.message || data?.errors?.email?.[0] || 'Unable to process request. Please try again.'
+    errorMessage.value = data?.message || data?.errors?.email?.[0] || t('common.error_occurred')
   } finally {
     isLoading.value = false
   }
@@ -77,7 +77,7 @@ async function onSubmit() {
               id="email"
               v-model="email"
               type="email"
-              placeholder="name@example.com"
+              :placeholder="t('auth.email_placeholder')"
               required
               autocomplete="email"
             />
