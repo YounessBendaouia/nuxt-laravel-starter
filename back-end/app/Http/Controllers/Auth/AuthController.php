@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Actions\Registration\RegistrationStatus;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -16,10 +17,22 @@ use Laravel\Sanctum\PersonalAccessToken;
 class AuthController extends Controller
 {
     /**
+     * Get whether public registration is currently open.
+     */
+    public function registrationStatus(RegistrationStatus $registrationStatus): JsonResponse
+    {
+        return response()
+            ->json(['enabled' => $registrationStatus->isEnabled()])
+            ->header('Cache-Control', 'no-store, private');
+    }
+
+    /**
      * Register a new user.
      */
-    public function register(Request $request): JsonResponse
+    public function register(Request $request, RegistrationStatus $registrationStatus): JsonResponse
     {
+        $registrationStatus->ensureEnabled();
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],

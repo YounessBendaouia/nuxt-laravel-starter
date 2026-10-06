@@ -10,7 +10,7 @@ import { Eye, EyeOff, Loader2, AlertCircle, Check, X, UserPlus } from '@lucide/v
 
 definePageMeta({
   layout: 'auth',
-  middleware: ['sanctum:guest'],
+  middleware: ['sanctum:guest', 'registration-enabled'],
   title: 'Register',
 })
 

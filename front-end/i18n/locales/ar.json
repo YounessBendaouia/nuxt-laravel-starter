@@ -116,6 +116,7 @@
     "rule_number": "رقم واحد على الأقل",
     "rule_special": "رمز خاص واحد على الأقل (!{'@'}#$%^&*)",
     "rule_match": "كلمتا المرور متطابقتان",
+    "registration_disabled_alert": "التسجيل لإنشاء حسابات جديدة مغلق حاليًا. يرجى التواصل مع المسؤول إذا كنت بحاجة إلى الوصول.",
     "footer_copyright": "© {year} NuxtJS & Laravel Sanctum Starter. تم البناء بواسطة shadcn-vue."
   },
   "banner": {

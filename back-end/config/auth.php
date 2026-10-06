@@ -114,4 +114,20 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Public Registration
+    |--------------------------------------------------------------------------
+    |
+    | Hard kill-switch for public self-registration. When false, registration
+    | is closed regardless of the runtime toggle. When true, the runtime toggle
+    | (managed via `php artisan registration:enable|disable`) decides.
+    | Unrecognised values are treated as false (fail closed).
+    |
+    */
+
+    'registration' => [
+        'enabled' => filter_var(env('REGISTRATION_ENABLED', true), FILTER_VALIDATE_BOOL),
+    ],
+
 ];

@@ -41,6 +41,29 @@ php artisan boost:install
 
 Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
 
+## 🛡️ User Registration Management & Security
+
+Public self-registration can be toggled and audited directly from Artisan CLI without any HTTP write exposure:
+
+```bash
+# Check current registration status & environment kill-switch
+php artisan registration:status
+
+# Disable public user registration
+php artisan registration:disable
+
+# Enable public user registration (prompts for confirmation in production, or pass --force)
+php artisan registration:enable
+```
+
+### Security Architecture
+
+- **Tier 1 (Master Kill-Switch)**: `REGISTRATION_ENABLED=false` in `.env` guarantees registration remains shut regardless of database settings.
+- **Tier 2 (Runtime Toggle)**: Stored in the `settings` table, controlled only via CLI with audit logging (recording OS user, hostname, environment).
+- **Zero HTTP Write Surface**: No endpoint exists to alter registration settings via web requests.
+- **Fail-Closed**: Database errors or unexpected configurations automatically default to disabled.
+- **Anti-Enumeration**: Status check runs before request validation, preventing email enumeration on closed registration endpoints.
+
 ## Contributing
 
 Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).

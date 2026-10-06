@@ -1,14 +1,20 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Middleware\EnsureRegistrationIsEnabled;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // Public routes (with strict rate limiting)
 Route::middleware('throttle:login')->group(function () {
-    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/register', [AuthController::class, 'register'])->middleware(EnsureRegistrationIsEnabled::class);
     Route::post('/login', [AuthController::class, 'login']);
 });
+
+// Public read-only registration status (lets the frontend hide the sign-up UI)
+Route::get('/registration-status', [AuthController::class, 'registrationStatus'])
+    ->middleware('throttle:api');
 
 // Protected routes
 Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
@@ -17,11 +23,12 @@ Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
     Route::put('/user/profile', [AuthController::class, 'updateProfile']);
     Route::put('/user/password', [AuthController::class, 'updatePassword']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/email/verification-notification', function (\Illuminate\Http\Request $request) {
+    Route::post('/email/verification-notification', function (Request $request) {
         if ($request->user()->hasVerifiedEmail()) {
             return response()->json(['message' => 'Email is already verified.'], 200);
         }
         $request->user()->sendEmailVerificationNotification();
+
         return response()->json(['message' => 'Verification link sent!']);
     })->middleware('throttle:6,1');
 

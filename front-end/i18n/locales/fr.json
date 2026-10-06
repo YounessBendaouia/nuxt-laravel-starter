@@ -116,6 +116,7 @@
     "rule_number": "Au moins un chiffre",
     "rule_special": "Au moins un caractère spécial (!{'@'}#$%^&*)",
     "rule_match": "Les mots de passe correspondent",
+    "registration_disabled_alert": "La création de nouveaux comptes est actuellement fermée. Veuillez contacter un administrateur si vous avez besoin d'un accès.",
     "footer_copyright": "© {year} NuxtJS & Laravel Sanctum Starter. Conçu avec shadcn-vue."
   },
   "banner": {

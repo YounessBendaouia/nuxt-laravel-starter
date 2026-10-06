@@ -18,6 +18,9 @@ definePageMeta({
 const route = useRoute()
 const { t } = useI18n()
 const { handleLogin, isLoading, errors } = useAuth()
+const { isRegistrationEnabled, fetchRegistrationStatus } = useRegistrationStatus()
+
+await useAsyncData('registration-status', () => fetchRegistrationStatus())
 
 const form = reactive({
   email: '',
@@ -68,6 +71,14 @@ async function onSubmit() {
           <CheckCircle2 class="h-4 w-4" />
           <AlertDescription class="font-medium text-xs">
             {{ t('auth.reset_success_alert') }}
+          </AlertDescription>
+        </Alert>
+
+        <!-- Registration disabled alert -->
+        <Alert v-if="route.query.registration === 'disabled'" class="mb-5 border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400">
+          <AlertCircle class="h-4 w-4" />
+          <AlertDescription class="font-medium text-xs">
+            {{ t('auth.registration_disabled_alert') }}
           </AlertDescription>
         </Alert>
 
@@ -157,21 +168,23 @@ async function onSubmit() {
           </Button>
         </form>
 
-        <div class="relative my-6">
-          <Separator />
-          <div class="absolute inset-0 flex items-center justify-center">
-            <span class="bg-card px-2 text-xs text-muted-foreground uppercase tracking-wider font-semibold">
-              {{ t('common.or') }}
-            </span>
+        <template v-if="isRegistrationEnabled">
+          <div class="relative my-6">
+            <Separator />
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="bg-card px-2 text-xs text-muted-foreground uppercase tracking-wider font-semibold">
+                {{ t('common.or') }}
+              </span>
+            </div>
           </div>
-        </div>
 
-        <p class="text-center text-xs text-muted-foreground">
-          {{ t('auth.no_account') }}
-          <NuxtLink to="/auth/register" class="font-semibold text-primary hover:underline ms-1">
-            {{ t('auth.sign_up') }}
-          </NuxtLink>
-        </p>
+          <p class="text-center text-xs text-muted-foreground">
+            {{ t('auth.no_account') }}
+            <NuxtLink to="/auth/register" class="font-semibold text-primary hover:underline ms-1">
+              {{ t('auth.sign_up') }}
+            </NuxtLink>
+          </p>
+        </template>
       </CardContent>
     </Card>
   </div>

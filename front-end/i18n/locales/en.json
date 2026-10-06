@@ -116,6 +116,7 @@
     "rule_number": "At least one number",
     "rule_special": "At least one special character (!{'@'}#$%^&*)",
     "rule_match": "Passwords match",
+    "registration_disabled_alert": "New account registration is currently closed. Please contact an administrator if you need access.",
     "footer_copyright": "© {year} NuxtJS & Laravel Sanctum Starter. Built with shadcn-vue."
   },
   "banner": {

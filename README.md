@@ -22,6 +22,7 @@ A production-ready fullstack monorepo starter combining **Laravel 12** API backe
   - Password reset request & reset flows with cryptographically signed tokens.
   - Secure signed email verification.
   - Login rate limiting and throttling.
+  - **Dynamic Registration Control & Security Kill-Switch** (manageable via CLI, zero HTTP write surface, fail-closed design).
 - **🎨 Modern Frontend Architecture**:
   - Built on **Nuxt 4** & **Vue 3** (SPA mode with full TypeScript support).
   - Modern UI built with **shadcn-vue** (Reka UI primitives).
@@ -143,6 +144,68 @@ npm run dev
 
 ---
 
+## 🛡️ User Registration Control & Security Architecture
+
+The starter includes an enterprise-grade, multi-layer registration gate that allows administrators to open or close user registration with high security.
+
+### 🎮 CLI Management (Artisan Commands)
+
+Registration cannot be modified via HTTP requests. To eliminate web-based tampering vectors, it is managed strictly from the server console:
+
+```bash
+# Check current registration status & environment kill-switch
+php artisan registration:status
+
+# Disable public user registration
+php artisan registration:disable
+
+# Enable public user registration (prompts for confirmation in production, or pass --force)
+php artisan registration:enable
+```
+
+Every enable/disable command automatically records a detailed audit log entry including OS user, hostname, and environment.
+
+### 🔒 Two-Tier Security Model
+
+```text
+Incoming Registration Request
+            │
+            ▼
+┌───────────────────────────────────────┐
+│  Tier 1: Master Kill-Switch (.env)    │
+│  REGISTRATION_ENABLED                 │
+└───────────────────┬───────────────────┘
+                    │  false ──► [403 Forbidden - Registration Disabled]
+                    ▼  true
+┌───────────────────────────────────────┐
+│  Tier 2: Runtime DB Toggle (Artisan)  │
+│  settings.registration.enabled        │
+└───────────────────┬───────────────────┘
+                    │  false ──► [403 Forbidden - Registration Disabled]
+                    ▼  true
+┌───────────────────────────────────────┐
+│  Proceed to Registration Validation   │
+└───────────────────────────────────────┘
+```
+
+1. **Tier 1: Master Kill-Switch (`REGISTRATION_ENABLED` in `.env`)**:
+   - An immutable environment kill-switch that overrides everything else.
+   - When set to `false`, registration is locked closed unconditionally. Even if someone runs `php artisan registration:enable` or manipulates database rows, registration remains completely disabled.
+   - Ideal for staging, private instances, or emergency incident mitigation during an active attack.
+
+2. **Tier 2: Runtime Toggle (Database `settings` table)**:
+   - Controls registration on a running system without needing configuration redeployments or server restarts.
+   - Zero HTTP write surface: no API endpoint or controller exists that accepts write operations to this setting.
+
+### 🛡️ Security Guarantees & Safeguards
+
+- **Fail-Closed by Design**: If the database is unreachable, a query fails, or an unexpected data type is found, registration instantly fails closed (disabled).
+- **Anti-Enumeration Protection**: Registration status is enforced in middleware *before* request validation. Attackers cannot submit credentials to probe whether an email address exists when registration is disabled.
+- **Throttling Remains Active**: The rate limiter (`throttle:login`) executes prior to the registration check to prevent denial-of-service or brute-force scanning.
+- **Frontend Sync**: The Nuxt frontend queries a read-only endpoint (`GET /api/registration-status`), dynamically hides the "Sign up" button on the login screen, and redirects direct visits to `/auth/register` with an informative banner.
+
+---
+
 ## 🔐 Environment Variables
 
 ### Backend (`back-end/.env`)
@@ -155,6 +218,7 @@ npm run dev
 | `SESSION_DOMAIN` | `.localhost` | Cookie domain for cross-port localhost sharing |
 | `SESSION_DRIVER` | `database` | Storage driver for user sessions |
 | `DB_CONNECTION` | `sqlite` | Default database connection |
+| `REGISTRATION_ENABLED` | `true` | Master kill-switch for public user self-registration |
 
 ### Frontend (`front-end/.env`)
 

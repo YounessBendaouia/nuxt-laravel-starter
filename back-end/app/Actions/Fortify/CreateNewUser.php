@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Actions\Registration\RegistrationStatus;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -13,6 +14,8 @@ class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
 
+    public function __construct(private RegistrationStatus $registrationStatus) {}
+
     /**
      * Validate and create a newly registered user.
      *
@@ -22,6 +25,8 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
+        $this->registrationStatus->ensureEnabled();
+
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
