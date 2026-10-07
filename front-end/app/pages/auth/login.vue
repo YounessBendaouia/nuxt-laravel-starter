@@ -18,7 +18,7 @@ definePageMeta({
 const route = useRoute()
 const { t } = useI18n()
 const { handleLogin, isLoading, errors } = useAuth()
-const { isRegistrationEnabled, fetchRegistrationStatus } = useRegistrationStatus()
+const { isRegistrationEnabled, showRegistrationNotice, fetchRegistrationStatus } = useRegistrationStatus()
 
 await useAsyncData('registration-status', () => fetchRegistrationStatus())
 
@@ -75,7 +75,7 @@ async function onSubmit() {
         </Alert>
 
         <!-- Registration disabled alert -->
-        <Alert v-if="route.query.registration === 'disabled'" class="mb-5 border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400">
+        <Alert v-if="route.query.registration === 'disabled' && showRegistrationNotice" class="mb-5 border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400">
           <AlertCircle class="h-4 w-4" />
           <AlertDescription class="font-medium text-xs">
             {{ t('auth.registration_disabled_alert') }}

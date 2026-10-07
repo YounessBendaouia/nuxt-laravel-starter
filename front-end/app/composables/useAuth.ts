@@ -31,9 +31,10 @@ export function useAuth() {
     if (status === 422 && data?.errors) {
       errors.value = data.errors
     } else if (status === 401) {
+      const msg = data?.message || 'Invalid email or password.'
       errors.value = {
-        general: [data?.message || 'Invalid email or password.'],
-        email: ['Invalid credentials'],
+        general: [msg],
+        email: [msg],
       }
     } else if (status === 429) {
       errors.value = {

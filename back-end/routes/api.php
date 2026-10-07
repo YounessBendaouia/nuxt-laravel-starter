@@ -25,11 +25,11 @@ Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/email/verification-notification', function (Request $request) {
         if ($request->user()->hasVerifiedEmail()) {
-            return response()->json(['message' => 'Email is already verified.'], 200);
+            return response()->json(['message' => __('messages.email_already_verified')], 200);
         }
         $request->user()->sendEmailVerificationNotification();
 
-        return response()->json(['message' => 'Verification link sent!']);
+        return response()->json(['message' => __('messages.verification_link_sent')]);
     })->middleware('throttle:6,1');
 
     // Dashboard data endpoints

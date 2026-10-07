@@ -57,6 +57,18 @@ class RegistrationStatus
     }
 
     /**
+     * Determine whether the "registration is closed" notice should be shown to visitors.
+     *
+     * The notice is only shown when registration was closed deliberately through
+     * the runtime toggle. When the environment kill-switch is OFF the sign-up UI
+     * is hidden silently, so the public cannot tell which layer closed it.
+     */
+    public function shouldShowDisabledNotice(): bool
+    {
+        return ! $this->isForcedOffByConfig() && ! $this->isEnabled();
+    }
+
+    /**
      * Open registration (subject to the environment kill-switch).
      */
     public function enable(): void
@@ -83,7 +95,7 @@ class RegistrationStatus
     public function ensureEnabled(): void
     {
         if (! $this->isEnabled()) {
-            abort(403, 'Registration is currently disabled.');
+            abort(403, __('messages.registration_disabled'));
         }
     }
 

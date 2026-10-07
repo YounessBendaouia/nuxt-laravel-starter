@@ -22,7 +22,10 @@ class AuthController extends Controller
     public function registrationStatus(RegistrationStatus $registrationStatus): JsonResponse
     {
         return response()
-            ->json(['enabled' => $registrationStatus->isEnabled()])
+            ->json([
+                'enabled' => $registrationStatus->isEnabled(),
+                'show_notice' => $registrationStatus->shouldShowDisabledNotice(),
+            ])
             ->header('Cache-Control', 'no-store, private');
     }
 
@@ -58,7 +61,7 @@ class AuthController extends Controller
         Auth::login($user);
 
         return response()->json([
-            'message' => 'Registration successful',
+            'message' => __('messages.registration_successful'),
             'user' => $user,
         ], 201);
     }
@@ -75,7 +78,7 @@ class AuthController extends Controller
 
         if (! Auth::validate($credentials)) {
             return response()->json([
-                'message' => 'Invalid credentials',
+                'message' => __('messages.invalid_credentials'),
             ], 401);
         }
 
@@ -104,7 +107,7 @@ class AuthController extends Controller
         }
 
         return response()->json([
-            'message' => 'Login successful',
+            'message' => __('messages.login_successful'),
             'user' => Auth::user(),
         ]);
     }
@@ -129,7 +132,7 @@ class AuthController extends Controller
         }
 
         return response()->json([
-            'message' => 'Logged out successfully',
+            'message' => __('messages.logout_successful'),
         ]);
     }
 
@@ -155,7 +158,7 @@ class AuthController extends Controller
         $request->user()->update($validated);
 
         return response()->json([
-            'message' => 'Profile updated',
+            'message' => __('messages.profile_updated'),
             'user' => $request->user()->fresh(),
         ]);
     }
@@ -183,7 +186,7 @@ class AuthController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Password updated successfully',
+            'message' => __('messages.password_updated'),
         ]);
     }
 }

@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Middleware\SecurityHeaders;
+use App\Http\Middleware\SetLocaleFromRequest;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Exceptions\ThrottleRequestsException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,10 +19,27 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->statefulApi();
         $middleware->append(SecurityHeaders::class);
+        $middleware->append(SetLocaleFromRequest::class);
         $middleware->redirectGuestsTo(fn (Request $request) => config('app.frontend_url', env('FRONTEND_URL', 'http://localhost:3000')).'/auth/login');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
+
+        $exceptions->render(function (ThrottleRequestsException $exception, Request $request) {
+            if ($request->is('api/*') || $request->expectsJson()) {
+                return response()->json(
+                    ['message' => __('messages.too_many_requests')],
+                    $exception->getStatusCode(),
+                    $exception->getHeaders(),
+                );
+            }
+        });
+
+        $exceptions->render(function (AuthenticationException $exception, Request $request) {
+            if ($request->is('api/*') || $request->expectsJson()) {
+                return response()->json(['message' => __('messages.unauthenticated')], 401);
+            }
+        });
     })->create();

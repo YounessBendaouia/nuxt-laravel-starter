@@ -84,6 +84,18 @@ return [
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Supported API Locales
+    |--------------------------------------------------------------------------
+    |
+    | Locales a client may request through the Accept-Language header. Anything
+    | not listed here is ignored and the default application locale is used.
+    |
+    */
+
+    'supported_locales' => ['en', 'fr', 'ar'],
+
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 
     /*

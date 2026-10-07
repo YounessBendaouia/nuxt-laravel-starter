@@ -26,16 +26,33 @@ describe('registration status endpoint', function () {
     test('reports registration as enabled by default', function () {
         $this->getJson('/api/registration-status')
             ->assertOk()
-            ->assertExactJson(['enabled' => true])
+            ->assertExactJson(['enabled' => true, 'show_notice' => false])
             ->assertHeader('Cache-Control', 'no-store, private');
     });
 
-    test('reports registration as disabled when toggled off', function () {
+    test('shows the notice when the env switch is on but the runtime toggle is off', function () {
         Setting::factory()->registrationDisabled()->create();
 
         $this->getJson('/api/registration-status')
             ->assertOk()
-            ->assertExactJson(['enabled' => false]);
+            ->assertExactJson(['enabled' => false, 'show_notice' => true]);
+    });
+
+    test('hides the notice when the env kill-switch is off', function () {
+        config(['auth.registration.enabled' => false]);
+
+        $this->getJson('/api/registration-status')
+            ->assertOk()
+            ->assertExactJson(['enabled' => false, 'show_notice' => false]);
+    });
+
+    test('hides the notice when the env kill-switch is off even if the runtime toggle is also off', function () {
+        config(['auth.registration.enabled' => false]);
+        Setting::factory()->registrationDisabled()->create();
+
+        $this->getJson('/api/registration-status')
+            ->assertOk()
+            ->assertExactJson(['enabled' => false, 'show_notice' => false]);
     });
 
     test('cannot be used to change the registration status over http', function (string $method) {
@@ -85,7 +102,7 @@ describe('fail-closed behaviour', function () {
         Setting::factory()->registrationEnabled()->create();
 
         $this->postJson('/api/register', validRegistrationPayload())->assertForbidden();
-        $this->getJson('/api/registration-status')->assertExactJson(['enabled' => false]);
+        $this->getJson('/api/registration-status')->assertExactJson(['enabled' => false, 'show_notice' => false]);
         $this->assertDatabaseMissing('users', ['email' => 'jane@example.com']);
     });
 
