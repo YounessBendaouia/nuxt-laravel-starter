@@ -19,5 +19,6 @@ return [
     'verification_link_sent' => 'تم إرسال رابط التحقق!',
     'too_many_requests' => 'محاولات كثيرة جدًا. يرجى المحاولة لاحقًا.',
     'unauthenticated' => 'غير مصادق عليه.',
-
+    'avatar_updated' => 'تم تحديث الصورة الرمزية بنجاح',
+    'avatar_deleted' => 'تم حذف الصورة الرمزية بنجاح',
 ];

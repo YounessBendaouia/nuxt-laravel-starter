@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import {
   User as UserIcon,
   Lock,
@@ -19,6 +20,9 @@ import {
   CheckCircle2,
   AlertCircle,
   Key,
+  Camera,
+  Upload,
+  Trash2,
 } from '@lucide/vue'
 import { toast } from 'vue-sonner'
 
@@ -57,6 +61,87 @@ const isUpdatingProfile = ref(false)
 const profileSuccess = ref('')
 const profileError = ref('')
 
+const avatarFileInput = ref<HTMLInputElement | null>(null)
+const isUploadingAvatar = ref(false)
+const isRemovingAvatar = ref(false)
+
+const userInitials = computed(() => {
+  const name = profileForm.name || user.value?.name || 'U'
+  return name
+    .split(' ')
+    .filter(Boolean)
+    .map((n) => n[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase() || 'U'
+})
+
+function triggerAvatarUpload() {
+  avatarFileInput.value?.click()
+}
+
+async function handleAvatarFileSelected(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input?.files?.[0]
+  if (!file) return
+
+  if (!file.type.startsWith('image/')) {
+    toast.error(t('settings_page.avatar_file_hint'))
+    input.value = ''
+    return
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    toast.error(t('settings_page.avatar_file_hint'))
+    input.value = ''
+    return
+  }
+
+  isUploadingAvatar.value = true
+  profileError.value = ''
+  try {
+    const formData = new FormData()
+    formData.append('avatar', file)
+
+    const res = await client<{ message: string; avatar: string; user: any }>('/api/user/avatar', {
+      method: 'POST',
+      body: formData,
+    })
+
+    if (res?.avatar) {
+      profileForm.avatar = res.avatar
+    }
+    await refreshIdentity()
+    toast.success(res?.message || t('settings_page.avatar_updated_toast'))
+  } catch (err: any) {
+    const data = err?.data || err?.response?._data
+    const msg = data?.message || data?.errors?.avatar?.[0] || t('settings_page.avatar_upload_failed')
+    toast.error(msg)
+  } finally {
+    isUploadingAvatar.value = false
+    input.value = ''
+  }
+}
+
+async function handleRemoveAvatar() {
+  isRemovingAvatar.value = true
+  profileError.value = ''
+  try {
+    const res = await client<{ message: string; user: any }>('/api/user/avatar', {
+      method: 'DELETE',
+    })
+    profileForm.avatar = ''
+    await refreshIdentity()
+    toast.success(res?.message || t('settings_page.avatar_removed_toast'))
+  } catch (err: any) {
+    const data = err?.data || err?.response?._data
+    const msg = data?.message || t('common.error_occurred')
+    toast.error(msg)
+  } finally {
+    isRemovingAvatar.value = false
+  }
+}
+
 const isEmailVerified = computed(() => !!user.value?.email_verified_at)
 const isResendingVerification = ref(false)
 const resendVerificationText = ref('')
@@ -93,7 +178,7 @@ async function updateProfile() {
       body: {
         name: profileForm.name,
         email: profileForm.email,
-        ...(profileForm.avatar ? { avatar: profileForm.avatar } : {}),
+        avatar: profileForm.avatar ? profileForm.avatar.trim() : null,
       },
     })
     await refreshIdentity()
@@ -102,7 +187,7 @@ async function updateProfile() {
     toast.success(t('settings_page.changes_saved'))
   } catch (err: any) {
     const data = err?.data || err?.response?._data
-    profileError.value = data?.message || data?.errors?.email?.[0] || t('common.error_occurred')
+    profileError.value = data?.message || data?.errors?.email?.[0] || data?.errors?.avatar?.[0] || t('common.error_occurred')
     toast.error(profileError.value)
   } finally {
     isUpdatingProfile.value = false
@@ -261,6 +346,80 @@ function copyRecoveryCodes() {
                 <AlertDescription class="text-xs font-medium">{{ profileError }}</AlertDescription>
               </Alert>
 
+              <!-- Avatar Management Section -->
+              <div class="mb-6 rounded-lg border border-border/60 bg-muted/20 p-4 sm:p-5">
+                <input
+                  ref="avatarFileInput"
+                  type="file"
+                  accept="image/jpeg,image/png,image/jpg,image/webp,image/gif"
+                  class="hidden"
+                  @change="handleAvatarFileSelected"
+                />
+
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                  <!-- Avatar Preview with click to change -->
+                  <div
+                    class="relative group cursor-pointer shrink-0"
+                    :title="t('settings_page.upload_avatar')"
+                    @click="triggerAvatarUpload"
+                  >
+                    <Avatar class="h-20 w-20 rounded-full border-2 border-border shadow-sm ring-2 ring-transparent group-hover:ring-primary/40 transition-all duration-200">
+                      <AvatarImage :src="profileForm.avatar" :alt="profileForm.name" class="object-cover" />
+                      <AvatarFallback class="rounded-full text-xl font-bold bg-primary/10 text-primary">
+                        {{ userInitials }}
+                      </AvatarFallback>
+                    </Avatar>
+
+                    <!-- Camera overlay badge on hover -->
+                    <div class="absolute inset-0 rounded-full bg-black/45 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-200 text-white">
+                      <Camera class="h-6 w-6 drop-shadow" />
+                    </div>
+
+                    <!-- Loading spinner overlay if uploading -->
+                    <div v-if="isUploadingAvatar" class="absolute inset-0 rounded-full bg-background/80 flex items-center justify-center">
+                      <Loader2 class="h-6 w-6 animate-spin text-primary" />
+                    </div>
+                  </div>
+
+                  <!-- Details and Action Buttons -->
+                  <div class="space-y-2 flex-1 min-w-0">
+                    <div>
+                      <h4 class="text-sm font-semibold text-foreground">{{ t('settings_page.avatar') }}</h4>
+                      <p class="text-xs text-muted-foreground">{{ t('settings_page.avatar_file_hint') }}</p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2 pt-1">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        class="gap-1.5 h-8 text-xs font-medium"
+                        :disabled="isUploadingAvatar || isRemovingAvatar"
+                        @click="triggerAvatarUpload"
+                      >
+                        <Loader2 v-if="isUploadingAvatar" class="h-3.5 w-3.5 animate-spin" />
+                        <Upload v-else class="h-3.5 w-3.5" />
+                        {{ isUploadingAvatar ? t('settings_page.uploading_avatar') : t('settings_page.upload_avatar') }}
+                      </Button>
+
+                      <Button
+                        v-if="profileForm.avatar"
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        class="gap-1.5 h-8 text-xs font-medium text-destructive hover:text-destructive hover:bg-destructive/10"
+                        :disabled="isUploadingAvatar || isRemovingAvatar"
+                        @click="handleRemoveAvatar"
+                      >
+                        <Loader2 v-if="isRemovingAvatar" class="h-3.5 w-3.5 animate-spin" />
+                        <Trash2 v-else class="h-3.5 w-3.5" />
+                        {{ isRemovingAvatar ? t('settings_page.removing_avatar') : t('settings_page.remove_avatar') }}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <form class="space-y-4" @submit.prevent="updateProfile">
                 <div class="space-y-2">
                   <Label for="name">{{ t('users_page.full_name') }}</Label>
@@ -301,6 +460,9 @@ function copyRecoveryCodes() {
                 <div class="space-y-2">
                   <Label for="avatar">{{ t('settings_page.avatar_url') }}</Label>
                   <Input id="avatar" v-model="profileForm.avatar" placeholder="https://example.com/avatar.jpg" />
+                  <p class="text-[11px] text-muted-foreground">
+                    {{ t('settings_page.avatar_desc') }}
+                  </p>
                 </div>
 
                 <Button type="submit" :disabled="isUpdatingProfile" class="font-medium">

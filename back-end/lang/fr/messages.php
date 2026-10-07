@@ -19,5 +19,6 @@ return [
     'verification_link_sent' => 'Lien de vérification envoyé !',
     'too_many_requests' => 'Trop de tentatives. Veuillez réessayer plus tard.',
     'unauthenticated' => 'Non authentifié.',
-
+    'avatar_updated' => 'Avatar mis à jour avec succès',
+    'avatar_deleted' => 'Avatar supprimé avec succès',
 ];

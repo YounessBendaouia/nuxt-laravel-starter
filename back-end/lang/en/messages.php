@@ -23,5 +23,6 @@ return [
     'verification_link_sent' => 'Verification link sent!',
     'too_many_requests' => 'Too many attempts. Please try again later.',
     'unauthenticated' => 'Unauthenticated.',
-
+    'avatar_updated' => 'Avatar updated successfully',
+    'avatar_deleted' => 'Avatar removed successfully',
 ];

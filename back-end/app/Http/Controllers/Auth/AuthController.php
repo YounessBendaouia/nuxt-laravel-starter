@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -155,12 +156,82 @@ class AuthController extends Controller
             'avatar' => ['sometimes', 'nullable', 'string', 'max:2048'],
         ]);
 
-        $request->user()->update($validated);
+        /** @var User $user */
+        $user = $request->user();
+
+        if (array_key_exists('avatar', $validated) && $validated['avatar'] !== $user->avatar) {
+            $this->deleteStoredAvatar($user->avatar);
+        }
+
+        $user->update($validated);
 
         return response()->json([
             'message' => __('messages.profile_updated'),
-            'user' => $request->user()->fresh(),
+            'user' => $user->fresh(),
         ]);
+    }
+
+    /**
+     * Upload and update user avatar image.
+     */
+    public function updateAvatar(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'avatar' => ['required', 'image', 'mimes:jpeg,png,jpg,webp,gif', 'max:5120'],
+        ]);
+
+        /** @var User $user */
+        $user = $request->user();
+
+        $this->deleteStoredAvatar($user->avatar);
+
+        $path = $validated['avatar']->store('avatars', 'public');
+        $url = Storage::disk('public')->url($path);
+
+        $user->update(['avatar' => $url]);
+
+        return response()->json([
+            'message' => __('messages.avatar_updated'),
+            'avatar' => $url,
+            'user' => $user->fresh(),
+        ]);
+    }
+
+    /**
+     * Remove user avatar.
+     */
+    public function deleteAvatar(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        $this->deleteStoredAvatar($user->avatar);
+
+        $user->update(['avatar' => null]);
+
+        return response()->json([
+            'message' => __('messages.avatar_deleted'),
+            'avatar' => null,
+            'user' => $user->fresh(),
+        ]);
+    }
+
+    /**
+     * Clean up a previously uploaded local avatar from public storage.
+     */
+    private function deleteStoredAvatar(?string $avatarUrl): void
+    {
+        if (! $avatarUrl) {
+            return;
+        }
+
+        $parsed = parse_url($avatarUrl, PHP_URL_PATH);
+        if ($parsed && str_contains($parsed, '/storage/avatars/')) {
+            $relativePath = 'avatars/'.basename($parsed);
+            if (Storage::disk('public')->exists($relativePath)) {
+                Storage::disk('public')->delete($relativePath);
+            }
+        }
     }
 
     /**

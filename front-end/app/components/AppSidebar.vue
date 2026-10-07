@@ -55,9 +55,9 @@ const currentLocale = computed(() => {
 const isRtl = computed(() => currentLocale.value?.dir === 'rtl')
 
 const currentUser = computed(() => ({
-  name: user.value?.name || "shadcn",
-  email: user.value?.email || "m@example.com",
-  avatar: user.value?.avatar || "/avatars/shadcn.jpg",
+  name: user.value?.name || "User",
+  email: user.value?.email || "",
+  avatar: user.value?.avatar || "",
 }))
 
 const data = computed(() => ({

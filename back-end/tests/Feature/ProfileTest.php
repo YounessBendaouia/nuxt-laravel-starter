@@ -2,7 +2,9 @@
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
 
@@ -93,4 +95,82 @@ test('password update fails when new password is weak', function () {
 
     $response->assertStatus(422)
         ->assertJsonValidationErrors(['password']);
+});
+
+test('authenticated user can upload an avatar image', function () {
+    Storage::fake('public');
+
+    $user = User::factory()->create();
+
+    $file = UploadedFile::fake()->image('avatar.jpg', 200, 200);
+
+    $response = $this->actingAs($user)->postJson('/api/user/avatar', [
+        'avatar' => $file,
+    ]);
+
+    $response->assertStatus(200)
+        ->assertJsonStructure(['message', 'avatar', 'user']);
+
+    $newAvatar = $user->fresh()->avatar;
+    expect($newAvatar)->not->toBeNull();
+
+    $relativePath = 'avatars/'.$file->hashName();
+    Storage::disk('public')->assertExists($relativePath);
+});
+
+test('avatar upload fails when file is not an image or too large', function () {
+    Storage::fake('public');
+
+    $user = User::factory()->create();
+
+    $pdfFile = UploadedFile::fake()->create('document.pdf', 100);
+
+    $this->actingAs($user)->postJson('/api/user/avatar', [
+        'avatar' => $pdfFile,
+    ])->assertStatus(422)
+        ->assertJsonValidationErrors(['avatar']);
+
+    $largeFile = UploadedFile::fake()->image('huge.jpg')->size(6000); // 6MB > 5MB limit
+
+    $this->actingAs($user)->postJson('/api/user/avatar', [
+        'avatar' => $largeFile,
+    ])->assertStatus(422)
+        ->assertJsonValidationErrors(['avatar']);
+});
+
+test('authenticated user can remove their avatar', function () {
+    Storage::fake('public');
+
+    $user = User::factory()->create([
+        'avatar' => 'https://example.com/avatar.jpg',
+    ]);
+
+    $response = $this->actingAs($user)->deleteJson('/api/user/avatar');
+
+    $response->assertStatus(200)
+        ->assertJson([
+            'message' => 'Avatar removed successfully',
+            'avatar' => null,
+        ]);
+
+    expect($user->fresh()->avatar)->toBeNull();
+});
+
+test('avatar upload and delete responses respect requested locale', function () {
+    Storage::fake('public');
+
+    $user = User::factory()->create();
+    $file = UploadedFile::fake()->image('avatar.png');
+
+    $this->actingAs($user)
+        ->withHeader('Accept-Language', 'fr')
+        ->postJson('/api/user/avatar', ['avatar' => $file])
+        ->assertStatus(200)
+        ->assertJson(['message' => 'Avatar mis à jour avec succès']);
+
+    $this->actingAs($user)
+        ->withHeader('Accept-Language', 'ar')
+        ->deleteJson('/api/user/avatar')
+        ->assertStatus(200)
+        ->assertJson(['message' => 'تم حذف الصورة الرمزية بنجاح']);
 });
