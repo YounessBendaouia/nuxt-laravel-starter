@@ -33,6 +33,9 @@
   },
   "nav": {
     "dashboard": "Tableau de bord",
+    "kanban": "Kanban",
+    "mail": "Messagerie",
+    "classification": "Classification",
     "analytics": "Analyses",
     "users": "Utilisateurs",
     "settings": "Paramètres",
@@ -63,6 +66,9 @@
     "two_factor": "Authentification à deux facteurs",
     "two_factor_authentication": "Authentification à deux facteurs",
     "dashboard": "Tableau de bord",
+    "kanban": "Kanban",
+    "mail": "Messagerie",
+    "classification": "Classification",
     "analytics": "Analyses",
     "users": "Utilisateurs",
     "settings": "Paramètres"
@@ -298,5 +304,154 @@
     "view_codes": "Afficher les codes",
     "regenerate": "Régénérer",
     "disable_2fa": "Désactiver l'authentification à deux facteurs"
+  },
+  "kanban_page": {
+    "title": "Tableau Kanban",
+    "description": "Optimisez les étapes du workflow, gérez les tâches agiles et collaborez en temps réel.",
+    "new_task": "Nouvelle tâche",
+    "search_placeholder": "Rechercher des tâches par titre, tag ou responsable...",
+    "filter_priority": "Priorité",
+    "filter_all": "Toutes les priorités",
+    "total_tasks": "Total des tâches",
+    "in_progress": "En cours",
+    "in_review": "En révision",
+    "completed": "Terminé",
+    "columns": {
+      "backlog": "À faire",
+      "in_progress": "En cours",
+      "in_review": "En révision",
+      "done": "Terminé"
+    },
+    "priorities": {
+      "urgent": "Urgent",
+      "high": "Haute",
+      "medium": "Moyenne",
+      "low": "Basse"
+    },
+    "dialog": {
+      "create_title": "Créer une nouvelle tâche",
+      "create_desc": "Ajoutez une nouvelle carte de tâche à votre tableau.",
+      "edit_title": "Détails de la tâche",
+      "title_label": "Titre",
+      "title_placeholder": "ex. Implémenter le flux OAuth2",
+      "desc_label": "Description",
+      "desc_placeholder": "Décrivez ce qui doit être accompli...",
+      "column_label": "Étape / Colonne",
+      "priority_label": "Priorité",
+      "label_label": "Étiquette / Tag",
+      "due_label": "Date d'échéance",
+      "assignee_label": "Responsable",
+      "subtasks_label": "Sous-tâches",
+      "subtask_placeholder": "Ajouter un élément de sous-tâche...",
+      "add_subtask": "Ajouter",
+      "move_to": "Déplacer vers",
+      "delete_task": "Supprimer la tâche",
+      "save": "Enregistrer",
+      "create": "Créer la tâche"
+    }
+  },
+  "mail_page": {
+    "title": "Messagerie",
+    "search_placeholder": "Rechercher par expéditeur, sujet ou contenu...",
+    "compose": "Nouveau message",
+    "all_mail": "Tous les messages",
+    "unread": "Non lus",
+    "folders": {
+      "inbox": "Boîte de réception",
+      "drafts": "Brouillons",
+      "sent": "Envoyés",
+      "junk": "Courrier indésirable",
+      "trash": "Corbeille",
+      "archive": "Archives"
+    },
+    "tags": {
+      "work": "Travail",
+      "personal": "Personnel",
+      "urgent": "Urgent",
+      "updates": "Mises à jour",
+      "clients": "Clients"
+    },
+    "actions": {
+      "archive": "Archiver",
+      "junk": "Signaler comme indésirable",
+      "delete": "Supprimer",
+      "snooze": "Reporter",
+      "reply": "Répondre",
+      "reply_all": "Répondre à tous",
+      "forward": "Transférer",
+      "mark_read": "Marquer comme lu",
+      "mark_unread": "Marquer comme non lu"
+    },
+    "compose_dialog": {
+      "title": "Nouveau message",
+      "to": "À",
+      "to_placeholder": "collegue{'@'}entreprise.com",
+      "subject": "Objet",
+      "subject_placeholder": "Mise à jour du projet...",
+      "category": "Catégorie",
+      "body": "Message",
+      "body_placeholder": "Écrivez votre message ici...",
+      "send": "Envoyer",
+      "discard": "Abandonner"
+    },
+    "quick_reply": {
+      "placeholder": "Écrire une réponse rapide...",
+      "send": "Envoyer la réponse",
+      "sent_toast": "La réponse a été envoyée avec succès !"
+    }
+  },
+  "classification_page": {
+    "title": "Studio de Classification",
+    "description": "Classification de données alimentée par l'IA, détection des risques PII et conformité réglementaire.",
+    "stats": {
+      "total": "Total classifié",
+      "accuracy": "Confiance moyenne",
+      "review": "Révision requise",
+      "pii": "Données sensibles / PII"
+    },
+    "sandbox": {
+      "title": "Bac à sable de classification IA",
+      "description": "Testez les modèles de classification sur du texte brut ou des extraits de documents.",
+      "input_label": "Contenu source",
+      "input_placeholder": "Collez du texte brut, des demandes client ou des documents à classifier...",
+      "select_model": "Modèle d'IA",
+      "run": "Lancer la classification IA",
+      "analyzing": "Analyse des tokens et du contexte...",
+      "presets_label": "Exemples prédéfinis :",
+      "preset_billing": "Litige de facturation",
+      "preset_security": "Fuite de clé API",
+      "preset_gdpr": "Demande RGPD",
+      "preset_feedback": "Retour produit",
+      "results_title": "Résultat de classification",
+      "primary_class": "Catégorie prédite",
+      "confidence": "Score de confiance",
+      "sensitivity": "Niveau de sensibilité",
+      "detected_entities": "Entités détectées & Garde-fous",
+      "recommended_action": "Action recommandée"
+    },
+    "catalog": {
+      "title": "Inventaire des actifs classifiés",
+      "description": "Catalogue des tickets, fichiers et entités classifiés.",
+      "tabs": {
+        "all": "Tous les actifs",
+        "pending": "En attente",
+        "sensitive": "Confidentiel / PII",
+        "verified": "Vérifiés"
+      },
+      "search_placeholder": "Filtrer les actifs par nom, tag ou catégorie...",
+      "filter_category": "Catégorie",
+      "filter_sensitivity": "Sensibilité",
+      "batch_approve": "Approuver la sélection",
+      "export_csv": "Exporter CSV",
+      "columns": {
+        "asset": "Actif / Contenu",
+        "category": "Catégorie",
+        "confidence": "Confiance",
+        "sensitivity": "Sensibilité",
+        "entities": "Entités",
+        "status": "Statut",
+        "actions": "Actions"
+      }
+    }
   }
 }

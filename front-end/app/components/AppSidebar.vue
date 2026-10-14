@@ -3,18 +3,18 @@ import { computed } from 'vue'
 import type { SidebarProps } from '@/components/ui/sidebar'
 import {
   IconCamera,
-  IconChartBar,
   IconDashboard,
   IconDatabase,
   IconFileAi,
   IconFileDescription,
-  IconFolder,
   IconHelp,
   IconInnerShadowTop,
-  IconListDetails,
+  IconLayoutKanban,
+  IconMail,
   IconReport,
   IconSearch,
   IconSettings,
+  IconTags,
   IconUsers,
 } from "@tabler/icons-vue"
 
@@ -68,19 +68,19 @@ const data = computed(() => ({
       icon: IconDashboard,
     },
     {
-      title: te('nav.lifecycle') ? t('nav.lifecycle') : "Lifecycle",
-      url: "/dashboard",
-      icon: IconListDetails,
+      title: te('nav.kanban') ? t('nav.kanban') : "Kanban",
+      url: "/dashboard/kanban",
+      icon: IconLayoutKanban,
     },
     {
-      title: te('nav.analytics') ? t('nav.analytics') : "Analytics",
-      url: "/dashboard/analytics",
-      icon: IconChartBar,
+      title: te('nav.mail') ? t('nav.mail') : "Mail",
+      url: "/dashboard/mail",
+      icon: IconMail,
     },
     {
-      title: te('nav.projects') ? t('nav.projects') : "Projects",
-      url: "/dashboard",
-      icon: IconFolder,
+      title: te('nav.classification') ? t('nav.classification') : "Classification",
+      url: "/dashboard/classification",
+      icon: IconTags,
     },
     {
       title: te('nav.team') ? t('nav.team') : "Team",

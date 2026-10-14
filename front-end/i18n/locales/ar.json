@@ -33,6 +33,9 @@
   },
   "nav": {
     "dashboard": "لوحة التحكم",
+    "kanban": "كانبان",
+    "mail": "البريد",
+    "classification": "التصنيف",
     "analytics": "التحليلات",
     "users": "المستخدمون",
     "settings": "الإعدادات",
@@ -63,6 +66,9 @@
     "two_factor": "المصادقة الثنائية",
     "two_factor_authentication": "المصادقة الثنائية",
     "dashboard": "لوحة التحكم",
+    "kanban": "كانبان",
+    "mail": "البريد",
+    "classification": "التصنيف",
     "analytics": "التحليلات",
     "users": "المستخدمون",
     "settings": "الإعدادات"
@@ -298,5 +304,154 @@
     "view_codes": "عرض الرموز",
     "regenerate": "إعادة التوليد",
     "disable_2fa": "تعطيل المصادقة الثنائية"
+  },
+  "kanban_page": {
+    "title": "لوحة كانبان",
+    "description": "إدارة مراحل سير العمل وتتبع المهام الرشيقة والتعاون في الوقت الفعلي.",
+    "new_task": "مهمة جديدة",
+    "search_placeholder": "البحث عن المهام بالعنوان أو الوسم أو المسؤول...",
+    "filter_priority": "الأولوية",
+    "filter_all": "جميع الأولويات",
+    "total_tasks": "إجمالي المهام",
+    "in_progress": "قيد التنفيذ",
+    "in_review": "قيد المراجعة",
+    "completed": "مكتملة",
+    "columns": {
+      "backlog": "قائمة الانتظار",
+      "in_progress": "قيد التنفيذ",
+      "in_review": "قيد المراجعة",
+      "done": "مكتمل"
+    },
+    "priorities": {
+      "urgent": "عاجل",
+      "high": "مرتفع",
+      "medium": "متوسط",
+      "low": "منخفض"
+    },
+    "dialog": {
+      "create_title": "إنشاء مهمة جديدة",
+      "create_desc": "إضافة بطاقة مهمة جديدة إلى لوحة سير العمل الخاصة بك.",
+      "edit_title": "تفاصيل المهمة",
+      "title_label": "العنوان",
+      "title_placeholder": "مثال: تحديث تدفق المصادقة OAuth2",
+      "desc_label": "الوصف",
+      "desc_placeholder": "صف ما يجب إنجازه في هذه المهمة...",
+      "column_label": "المرحلة / العمود",
+      "priority_label": "الأولوية",
+      "label_label": "التصنيف / الوسم",
+      "due_label": "تاريخ الاستحقاق",
+      "assignee_label": "المسؤول",
+      "subtasks_label": "المهام الفرعية",
+      "subtask_placeholder": "إضافة عنصر فرعي...",
+      "add_subtask": "إضافة",
+      "move_to": "نقل إلى",
+      "delete_task": "حذف المهمة",
+      "save": "حفظ التغييرات",
+      "create": "إنشاء المهمة"
+    }
+  },
+  "mail_page": {
+    "title": "البريد الإلكتروني",
+    "search_placeholder": "البحث بالمرسل أو الموضوع أو المحتوى...",
+    "compose": "رسالة جديدة",
+    "all_mail": "كل البريد",
+    "unread": "غير مقروء",
+    "folders": {
+      "inbox": "صندوق الوارد",
+      "drafts": "المسودات",
+      "sent": "المرسل",
+      "junk": "غير مرغوب فيه",
+      "trash": "سلة المهملات",
+      "archive": "الأرشيف"
+    },
+    "tags": {
+      "work": "عمل",
+      "personal": "شخصي",
+      "urgent": "عاجل",
+      "updates": "تحديثات",
+      "clients": "عملاء"
+    },
+    "actions": {
+      "archive": "أرشفة",
+      "junk": "نقل إلى غير الهام",
+      "delete": "حذف",
+      "snooze": "تأجيل",
+      "reply": "رد",
+      "reply_all": "رد على الكل",
+      "forward": "إعادة توجيه",
+      "mark_read": "تحديد كمقروء",
+      "mark_unread": "تحديد كغير مقروء"
+    },
+    "compose_dialog": {
+      "title": "رسالة جديدة",
+      "to": "إلى",
+      "to_placeholder": "colleague{'@'}company.com",
+      "subject": "الموضوع",
+      "subject_placeholder": "تحديث حالة المشروع...",
+      "category": "الفئة",
+      "body": "نص الرسالة",
+      "body_placeholder": "اكتب رسالتك هنا...",
+      "send": "إرسال الرسالة",
+      "discard": "تجاهل"
+    },
+    "quick_reply": {
+      "placeholder": "كتابة رد سريع...",
+      "send": "إرسال الرد",
+      "sent_toast": "تم إرسال الرد بنجاح!"
+    }
+  },
+  "classification_page": {
+    "title": "استوديو التصنيف والامتثال",
+    "description": "تصنيف البيانات المعتمد على الذكاء الاصطناعي وكشف المخاطر والبيانات الحساسة.",
+    "stats": {
+      "total": "إجمالي المصنفات",
+      "accuracy": "متوسط دقة الثقة",
+      "review": "تتطلب مراجعة بشرية",
+      "pii": "بيانات حساسة مكتشفة"
+    },
+    "sandbox": {
+      "title": "مختبر التصنيف الذكي المباشر",
+      "description": "اختبار نماذج الذكاء الاصطناعي على نصوص الاستفسارات أو المستندات التنظيمية.",
+      "input_label": "المحتوى النصي",
+      "input_placeholder": "الصق النص أو استفسار العميل لتحليله وتصنيفه...",
+      "select_model": "نموذج الذكاء الاصطناعي",
+      "run": "تشغيل التصنيف الذكي",
+      "analyzing": "جار تحليل السياق والكيانات...",
+      "presets_label": "نماذج جاهزة سريعة:",
+      "preset_billing": "نزاع فواتير",
+      "preset_security": "تسريب مفتاح API",
+      "preset_gdpr": "طلب حذف بيانات GDPR",
+      "preset_feedback": "ملاحظات المستخدمين",
+      "results_title": "نتائج التصنيف",
+      "primary_class": "الفئة المتوقعة",
+      "confidence": "درجة الثقة",
+      "sensitivity": "مستوى السرية والحساسية",
+      "detected_entities": "الكيانات المكتشفة والضوابط",
+      "recommended_action": "الإجراء الموصى به"
+    },
+    "catalog": {
+      "title": "سجل البيانات المصنفة",
+      "description": "فهرس المستندات والتذاكر والبيانات التي تم تصنيفها مسبقاً.",
+      "tabs": {
+        "all": "جميع العناصر",
+        "pending": "بانتظار المراجعة",
+        "sensitive": "سري / PII",
+        "verified": "مؤكدة"
+      },
+      "search_placeholder": "تصفية الأصول بالاسم أو الوسم أو الفئة...",
+      "filter_category": "الفئة",
+      "filter_sensitivity": "السرية",
+      "batch_approve": "اعتماد المحدد",
+      "export_csv": "تصدير CSV",
+      "columns": {
+        "asset": "المحتوى / الأصل",
+        "category": "الفئة",
+        "confidence": "درجة الثقة",
+        "sensitivity": "السرية",
+        "entities": "الكيانات",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      }
+    }
   }
 }

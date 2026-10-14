@@ -40,9 +40,12 @@ const route = useRoute()
             size="icon"
             class="size-8 group-data-[collapsible=icon]:opacity-0"
             variant="outline"
+            as-child
           >
-            <IconMail />
-            <span class="sr-only">{{ $t('nav.inbox') }}</span>
+            <NuxtLink to="/dashboard/mail" :title="$t('nav.inbox')">
+              <IconMail />
+              <span class="sr-only">{{ $t('nav.inbox') }}</span>
+            </NuxtLink>
           </Button>
         </SidebarMenuItem>
       </SidebarMenu>

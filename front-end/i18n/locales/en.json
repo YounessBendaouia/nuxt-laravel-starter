@@ -33,6 +33,9 @@
   },
   "nav": {
     "dashboard": "Dashboard",
+    "kanban": "Kanban",
+    "mail": "Mail",
+    "classification": "Classification",
     "analytics": "Analytics",
     "users": "Users",
     "settings": "Settings",
@@ -63,6 +66,9 @@
     "two_factor": "Two-Factor Authentication",
     "two_factor_authentication": "Two-Factor Authentication",
     "dashboard": "Dashboard",
+    "kanban": "Kanban",
+    "mail": "Mail",
+    "classification": "Classification",
     "analytics": "Analytics",
     "users": "Users",
     "settings": "Settings"
@@ -298,5 +304,154 @@
     "view_codes": "View Codes",
     "regenerate": "Regenerate",
     "disable_2fa": "Disable Two-Factor Authentication"
+  },
+  "kanban_page": {
+    "title": "Kanban Board",
+    "description": "Streamline workflow stages, manage agile tasks, and collaborate in real-time.",
+    "new_task": "New Task",
+    "search_placeholder": "Search tasks by title, tag, or assignee...",
+    "filter_priority": "Priority",
+    "filter_all": "All Priorities",
+    "total_tasks": "Total Tasks",
+    "in_progress": "In Progress",
+    "in_review": "Under Review",
+    "completed": "Completed",
+    "columns": {
+      "backlog": "Backlog",
+      "in_progress": "In Progress",
+      "in_review": "In Review",
+      "done": "Done"
+    },
+    "priorities": {
+      "urgent": "Urgent",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "dialog": {
+      "create_title": "Create New Task",
+      "create_desc": "Add a new task card to your workflow board.",
+      "edit_title": "Task Details",
+      "title_label": "Title",
+      "title_placeholder": "e.g. Implement OAuth2 Refresh Flow",
+      "desc_label": "Description",
+      "desc_placeholder": "Describe what needs to be delivered...",
+      "column_label": "Stage / Column",
+      "priority_label": "Priority",
+      "label_label": "Label / Tag",
+      "due_label": "Due Date",
+      "assignee_label": "Assignee",
+      "subtasks_label": "Subtasks",
+      "subtask_placeholder": "Add subtask item...",
+      "add_subtask": "Add",
+      "move_to": "Move To",
+      "delete_task": "Delete Task",
+      "save": "Save Changes",
+      "create": "Create Task"
+    }
+  },
+  "mail_page": {
+    "title": "Mail",
+    "search_placeholder": "Search mail by sender, subject, or content...",
+    "compose": "Compose",
+    "all_mail": "All Mail",
+    "unread": "Unread",
+    "folders": {
+      "inbox": "Inbox",
+      "drafts": "Drafts",
+      "sent": "Sent",
+      "junk": "Junk",
+      "trash": "Trash",
+      "archive": "Archive"
+    },
+    "tags": {
+      "work": "Work",
+      "personal": "Personal",
+      "urgent": "Urgent",
+      "updates": "Updates",
+      "clients": "Clients"
+    },
+    "actions": {
+      "archive": "Archive",
+      "junk": "Move to Junk",
+      "delete": "Delete",
+      "snooze": "Snooze",
+      "reply": "Reply",
+      "reply_all": "Reply All",
+      "forward": "Forward",
+      "mark_read": "Mark as read",
+      "mark_unread": "Mark as unread"
+    },
+    "compose_dialog": {
+      "title": "New Message",
+      "to": "To",
+      "to_placeholder": "colleague{'@'}company.com",
+      "subject": "Subject",
+      "subject_placeholder": "Project status update...",
+      "category": "Category",
+      "body": "Message",
+      "body_placeholder": "Type your message here...",
+      "send": "Send Message",
+      "discard": "Discard"
+    },
+    "quick_reply": {
+      "placeholder": "Write a quick reply...",
+      "send": "Send Reply",
+      "sent_toast": "Email reply has been sent successfully!"
+    }
+  },
+  "classification_page": {
+    "title": "Classification Studio",
+    "description": "AI-powered data classification, PII risk detection, and regulatory compliance tagging.",
+    "stats": {
+      "total": "Total Classified",
+      "accuracy": "Confidence Average",
+      "review": "Requires Review",
+      "pii": "Sensitive / PII Flagged"
+    },
+    "sandbox": {
+      "title": "Live AI Classifier Sandbox",
+      "description": "Test classification models against raw text, customer messages, or document snippets.",
+      "input_label": "Input Content",
+      "input_placeholder": "Paste raw text, customer inquiries, or compliance documents to classify...",
+      "select_model": "Classification Model",
+      "run": "Run AI Classification",
+      "analyzing": "Analyzing tokens & context...",
+      "presets_label": "Quick Presets:",
+      "preset_billing": "Billing Dispute",
+      "preset_security": "API Key Leak",
+      "preset_gdpr": "GDPR Removal",
+      "preset_feedback": "Feature Feedback",
+      "results_title": "Classification Output",
+      "primary_class": "Predicted Category",
+      "confidence": "Confidence Score",
+      "sensitivity": "Sensitivity Tier",
+      "detected_entities": "Detected Entities & Guardrails",
+      "recommended_action": "Action Recommendation"
+    },
+    "catalog": {
+      "title": "Classified Asset Inventory",
+      "description": "Catalog of classified tickets, files, and database entities.",
+      "tabs": {
+        "all": "All Assets",
+        "pending": "Needs Review",
+        "sensitive": "Confidential / PII",
+        "verified": "Verified"
+      },
+      "search_placeholder": "Filter assets by name, tag, or category...",
+      "filter_category": "Category",
+      "filter_sensitivity": "Sensitivity",
+      "batch_approve": "Approve Selected",
+      "export_csv": "Export CSV",
+      "columns": {
+        "asset": "Asset / Content",
+        "category": "Category",
+        "confidence": "Confidence",
+        "sensitivity": "Sensitivity",
+        "entities": "Entities",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    }
   }
 }
